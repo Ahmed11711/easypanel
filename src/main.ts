@@ -19,11 +19,11 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  // app.useGlobalInterceptors(new TransformInterceptor());
-  // app.useGlobalFilters(new ValidationExceptionFilter());
+  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalFilters(new ValidationExceptionFilter());
   app.setGlobalPrefix('/api');
 
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();
  
