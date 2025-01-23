@@ -23,7 +23,7 @@ async function bootstrap() {
   app.useGlobalFilters(new ValidationExceptionFilter());
   app.setGlobalPrefix('/api');
 
-  await app.listen(4000);
+  await app.listen(3000);
 }
 bootstrap();
  
