@@ -79,7 +79,6 @@ var AuthService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.userService.findOneByEmail(email)];
                     case 1:
                         user = _b.sent();
-                        console.log(password);
                         _a = user;
                         if (!_a) return [3 /*break*/, 3];
                         return [4 /*yield*/, bcrypt.compare(password, user.password)];
@@ -87,6 +86,7 @@ var AuthService = /** @class */ (function () {
                         _a = (_b.sent());
                         _b.label = 3;
                     case 3:
+                        //  console.log(password);
                         if (_a) {
                             password_1 = user.password, result = __rest(user, ["password"]);
                             return [2 /*return*/, result];
@@ -105,7 +105,7 @@ var AuthService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.validatedUser(userLoginDto.email, userLoginDto.password)];
                     case 1:
                         user = _b.sent();
-                        console.log(user);
+                        // console.log(user)
                         if (!user) {
                             throw new common_1.UnauthorizedException('Invalid email or password');
                         }

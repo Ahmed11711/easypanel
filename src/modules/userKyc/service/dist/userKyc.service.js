@@ -57,17 +57,19 @@ var UserKycService = /** @class */ (function () {
     }
     UserKycService.prototype.storeKyc = function (data, files, user) {
         return __awaiter(this, void 0, Promise, function () {
-            var checkRecord, uploadedFiles, uploadPromises, newKyc;
+            var checkRecord, uploadedFiles_1, uploadPromises, newKyc, error_1;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.checkIfRecordExists(user.userId)];
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, this.checkIfRecordExists(user.userId)];
                     case 1:
                         checkRecord = _a.sent();
                         if (checkRecord) {
-                            throw new common_1.ConflictException('The user kety with this ID already exists.');
+                            throw new common_1.ConflictException('The user kyc with this ID already exists.');
                         }
-                        uploadedFiles = {
+                        uploadedFiles_1 = {
                             front_id_image: null,
                             back_id_image: null,
                             face_image: null
@@ -79,27 +81,41 @@ var UserKycService = /** @class */ (function () {
                                     case 0: return [4 /*yield*/, this.fileService.uploadFile(file, 'kyc')];
                                     case 1:
                                         uploadedUrl = _a.sent();
-                                        uploadedFiles[file.fieldname] = uploadedUrl;
+                                        uploadedFiles_1[file.fieldname] = uploadedUrl;
                                         return [2 /*return*/];
                                 }
                             });
                         }); });
+                        // Wait for all file uploads to finish
                         return [4 /*yield*/, Promise.all(uploadPromises)];
                     case 2:
+                        // Wait for all file uploads to finish
                         _a.sent();
                         newKyc = this.userKycService.create({
                             fullname: data.fullname,
                             international_id: data.international_id,
-                            front_id_image: uploadedFiles.front_id_image,
-                            back_id_image: uploadedFiles.back_id_image,
-                            face_image: uploadedFiles.face_image,
+                            front_id_image: uploadedFiles_1.front_id_image,
+                            back_id_image: uploadedFiles_1.back_id_image,
+                            face_image: uploadedFiles_1.face_image,
                             active: user_kyc_enum_1.typeStatusKyc.PENDING,
                             user_id: user.userId
                         });
-                        this.userKycService.save(newKyc);
+                        // Save the new KYC record
+                        return [4 /*yield*/, this.userKycService.save(newKyc)];
+                    case 3:
+                        // Save the new KYC record
+                        _a.sent();
+                        // Return success message
                         return [2 /*return*/, {
                                 message: 'Operation stored successfully'
                             }];
+                    case 4:
+                        error_1 = _a.sent();
+                        // Log the error for debugging
+                        console.error('Error storing KYC:', error_1);
+                        // Re-throw the error to propagate it if needed or handle it accordingly
+                        throw new common_1.InternalServerErrorException('An error occurred while processing the KYC.');
+                    case 5: return [2 /*return*/];
                 }
             });
         });

@@ -62,7 +62,7 @@ function bootstrap() {
                     app.useGlobalInterceptors(new response_Interceptor_1.TransformInterceptor());
                     app.useGlobalFilters(new validation_exception_filter_1.ValidationExceptionFilter());
                     app.setGlobalPrefix('/api');
-                    return [4 /*yield*/, app.listen(4000)];
+                    return [4 /*yield*/, app.listen(3000)];
                 case 2:
                     _a.sent();
                     return [2 /*return*/];

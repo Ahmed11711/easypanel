@@ -36,11 +36,8 @@ export class AuthService {
 
   async validatedUser(email: string, password: string) {
     const user = await this.userService.findOneByEmail(email);
-     console.log(password);
+    //  console.log(password);
  
-
-
-
     if (user && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
       
@@ -54,7 +51,7 @@ export class AuthService {
       userLoginDto.email,
       userLoginDto.password,
     );
-    console.log(user)
+    // console.log(user)
     if (!user) {
       throw new UnauthorizedException('Invalid email or password');
     }

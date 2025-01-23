@@ -36,7 +36,7 @@ export class BraveoOtpService {
 
     try {
       await this.transactionalEmailsApi.sendTransacEmail(msg);
-      console.log('send otp success');
+      // console.log('send otp success');
     } catch (error) {
       // send to anther provider
       // this.sendForSupport();
