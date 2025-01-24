@@ -20,9 +20,9 @@ exports.FileValidation = common_1.createParamDecorator(function (data, ctx) {
     if (!faceImg) {
         throw new common_1.BadRequestException(['You must upload the front_id_image.']);
     }
-    if (!backImg) {
-        throw new common_1.BadRequestException(['You must upload the back_id_image.']);
-    }
+    // if (!backImg) {
+    //   throw new BadRequestException(['You must upload the back_id_image.']);
+    // }
     if (!faceRealImg) {
         throw new common_1.BadRequestException(['You must upload the face_image.']);
     }

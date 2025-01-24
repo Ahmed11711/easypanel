@@ -27,9 +27,9 @@ export const FileValidation = createParamDecorator(
     if (!faceImg) {
       throw new BadRequestException(['You must upload the front_id_image.']);
     }
-    if (!backImg) {
-      throw new BadRequestException(['You must upload the back_id_image.']);
-    }
+    // if (!backImg) {
+    //   throw new BadRequestException(['You must upload the back_id_image.']);
+    // }
 
     if (!faceRealImg) {
       throw new BadRequestException(['You must upload the face_image.']);
