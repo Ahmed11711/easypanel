@@ -123,6 +123,31 @@ var WithDrawService = /** @class */ (function () {
             });
         });
     };
+    WithDrawService.prototype.orderByBank = function (data, user) {
+        return __awaiter(this, void 0, Promise, function () {
+            var pinCode, checkMoney;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.pinCodeService.checkVerfied(data, user)];
+                    case 1:
+                        pinCode = _a.sent();
+                        return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, data.amount)];
+                    case 2:
+                        checkMoney = _a.sent();
+                        if (checkMoney) {
+                            // await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
+                            return [2 /*return*/, {
+                                    message: "success for withdraw"
+                                }];
+                        }
+                        else {
+                            throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     WithDrawService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(withdraw_entinty_1.Withdraw))

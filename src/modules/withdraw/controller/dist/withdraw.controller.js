@@ -72,6 +72,16 @@ var WithDrawController = /** @class */ (function () {
             });
         });
     };
+    WithDrawController.prototype.withdrawBank = function (data, user) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.withdrawService.order(data, user)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     __decorate([
         common_1.Get('get-transactions'),
         __param(0, common_1.Query()), __param(1, get_current_user_1.GetCurrentUser())
@@ -80,6 +90,10 @@ var WithDrawController = /** @class */ (function () {
         common_1.Post('order'),
         __param(0, common_1.Body()), __param(1, get_current_user_1.GetCurrentUser())
     ], WithDrawController.prototype, "orderWithdraw");
+    __decorate([
+        common_1.Post('orderByBank'),
+        __param(0, common_1.Body()), __param(1, get_current_user_1.GetCurrentUser())
+    ], WithDrawController.prototype, "withdrawBank");
     WithDrawController = __decorate([
         common_1.Controller('withdraw')
     ], WithDrawController);

@@ -14,6 +14,7 @@ import { generateRandomAlphanumeric } from 'src/common/generateRandomCode/genera
 import { TypeWithdraw } from "../enum/withdraw.enum";
 import { NotficationService } from "src/modules/notfication/service/notication.service";
 import { NotficationType } from "src/modules/notfication/enum/notifaction.enum";
+import { WithdrawBank } from "../dto/withdrawByBank.dto";
 @Injectable()
 
 
@@ -83,6 +84,29 @@ export class WithDrawService{
 
 
       
+      }
+
+      async orderByBank(data:WithdrawBank,user:IJWTpayload):Promise<{message:string}>{
+      
+  
+       const pinCode= await this.pinCodeService.checkVerfied(data,user);
+       const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
+  
+ 
+       if(checkMoney){
+ 
+        // await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
+ 
+        return {
+         message :"success for withdraw"
+        }
+       }else{
+         throw new HttpException(
+           'You dont have enough balance withdrawal. Please try again later.',
+           HttpStatus.CONFLICT,
+         );      }
+     
+       
       }
 
   

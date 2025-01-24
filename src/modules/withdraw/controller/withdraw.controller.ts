@@ -23,4 +23,10 @@ export class WithDrawController{
         return await this.withdrawService.order(data,user)
 
     }
+    @Post('orderByBank')
+    async withdrawBank(@Body() data:OrderWithdraw ,@GetCurrentUser() user:IJWTpayload){
+         
+         return await this.withdrawService.order(data,user)
+ 
+     }
 }

@@ -1,3 +1,4 @@
+import { Double } from "typeorm";
 import { TypeStatusShare } from "../enum/share.enum";
 
 export interface IShare {

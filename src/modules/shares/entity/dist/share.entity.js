@@ -29,7 +29,7 @@ var Share = /** @class */ (function () {
         typeorm_1.Column()
     ], Share.prototype, "price");
     __decorate([
-        typeorm_1.Column()
+        typeorm_1.Column('float')
     ], Share.prototype, "profit");
     __decorate([
         typeorm_1.Column()

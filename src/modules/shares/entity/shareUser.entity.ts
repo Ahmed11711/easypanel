@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn,OneToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn,OneToOne, OneToMany, Double } from 'typeorm';
 import {Share} from './share.entity'
 import { ProfitShare } from './profitShare.entity';
  
@@ -35,9 +35,8 @@ export class ShareUser {
   profitShare: ProfitShare;
  
 
-  @Column({ type: 'int' })
-  profit: number;
-
+  @Column('float')
+  profit: number
 
   @Column()
   amount: number;

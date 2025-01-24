@@ -43,7 +43,7 @@ var ShareUser = /** @class */ (function () {
         typeorm_1.JoinColumn({ name: 'share_users_id' })
     ], ShareUser.prototype, "profitShare");
     __decorate([
-        typeorm_1.Column({ type: 'int' })
+        typeorm_1.Column('float')
     ], ShareUser.prototype, "profit");
     __decorate([
         typeorm_1.Column()

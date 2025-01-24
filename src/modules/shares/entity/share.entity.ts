@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, Double } from 'typeorm';
 import { TypeStatusShare } from '../enum/share.enum';
 import { ShareUser } from './shareUser.entity';
 
@@ -19,8 +19,8 @@ export class Share {
   @Column() 
   price: number;
 
-  @Column() 
-  profit: number;
+  @Column('float')
+  profit: number
 
   @Column() 
   sold: number;
