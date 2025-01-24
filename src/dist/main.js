@@ -39,8 +39,6 @@ exports.__esModule = true;
 var core_1 = require("@nestjs/core");
 var app_module_1 = require("./app.module");
 var common_1 = require("@nestjs/common");
-var response_Interceptor_1 = require("./common/Interceptor/response.Interceptor");
-var validation_exception_filter_1 = require("./common/Filters/validation-exception.filter");
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function () {
         var app;
@@ -59,8 +57,8 @@ function bootstrap() {
                         forbidNonWhitelisted: true,
                         transform: true
                     }));
-                    app.useGlobalInterceptors(new response_Interceptor_1.TransformInterceptor());
-                    app.useGlobalFilters(new validation_exception_filter_1.ValidationExceptionFilter());
+                    // app.useGlobalInterceptors(new TransformInterceptor());
+                    // app.useGlobalFilters(new ValidationExceptionFilter());
                     app.setGlobalPrefix('/api');
                     return [4 /*yield*/, app.listen(3000)];
                 case 2:

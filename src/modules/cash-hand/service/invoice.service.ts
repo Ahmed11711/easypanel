@@ -5,6 +5,7 @@ import { InvoiceEntity } from "../entity/invoice.entity";
 import { Repository } from 'typeorm';
 import { IJWTpayload } from "src/modules/auth/interface/login.payload";
 import { PaginationService } from 'src/common/pagination/service/pagination.service';
+import { ISPublic } from "src/modules/auth/decorator/isPublic.decorator";
 
 @Injectable()
 
@@ -19,9 +20,14 @@ export class InvoiceService{
     ){}
 
 
-    async upload(file: any,user:IJWTpayload): Promise<{ message: string }> {
+    @ISPublic()
+    async upload(file: any,user:IJWTpayload){
+   
+      const upload = await this.fileServce.uploadFile(file, 'invoice');
+      console.log(upload);
+     
+      return upload;
         try {
-           const upload = await this.fileServce.uploadFile(file, 'invoice');
           
           const storeInvoice=await this.storeInvoicedb(upload,user.userId);
            return {

@@ -49,6 +49,7 @@ exports.InvoiceService = void 0;
 var common_1 = require("@nestjs/common");
 var typeorm_1 = require("@nestjs/typeorm");
 var invoice_entity_1 = require("../entity/invoice.entity");
+var isPublic_decorator_1 = require("src/modules/auth/decorator/isPublic.decorator");
 var InvoiceService = /** @class */ (function () {
     function InvoiceService(inoviceService, fileServce, paginationService) {
         this.inoviceService = inoviceService;
@@ -56,25 +57,27 @@ var InvoiceService = /** @class */ (function () {
         this.paginationService = paginationService;
     }
     InvoiceService.prototype.upload = function (file, user) {
-        return __awaiter(this, void 0, Promise, function () {
+        return __awaiter(this, void 0, void 0, function () {
             var upload, storeInvoice, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.fileServce.uploadFile(file, 'invoice')];
+                    case 0: return [4 /*yield*/, this.fileServce.uploadFile(file, 'invoice')];
                     case 1:
                         upload = _a.sent();
-                        return [4 /*yield*/, this.storeInvoicedb(upload, user.userId)];
+                        console.log(upload);
+                        return [2 /*return*/, upload];
                     case 2:
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, this.storeInvoicedb(upload, user.userId)];
+                    case 3:
                         storeInvoice = _a.sent();
                         return [2 /*return*/, {
                                 message: "Upload invoice success"
                             }];
-                    case 3:
+                    case 4:
                         error_1 = _a.sent();
                         throw new common_1.BadGatewayException("Failed to upload invoice: " + error_1.message);
-                    case 4: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -114,6 +117,9 @@ var InvoiceService = /** @class */ (function () {
             });
         });
     };
+    __decorate([
+        isPublic_decorator_1.ISPublic()
+    ], InvoiceService.prototype, "upload");
     InvoiceService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(invoice_entity_1.InvoiceEntity))

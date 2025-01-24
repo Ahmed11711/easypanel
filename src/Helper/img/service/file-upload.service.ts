@@ -13,12 +13,12 @@ export class FileService {
     this.s3Client = new S3Client({
       region: 'eu-central-1',
       credentials: {
-        accessKeyId: 'AKIAZKDICZIRDUXEH4XH',
-        secretAccessKey: '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',
+        accessKeyId: 'AKIARWPFIIFOZPBBZGAQ',
+        secretAccessKey: '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',
       },
     });
 
-    this.bucketName = 'ahmedsamir1';
+    this.bucketName = 'ahmedsamir11';
   }
 
   async uploadFile(file: Express.Multer.File,folderName)  {
@@ -32,8 +32,13 @@ export class FileService {
       };
  
     await this.s3Client.send(new PutObjectCommand(params));
+   
     // return `https://${this.bucketName}.s3.amazonaws.com/${folderName}/${fileKey}`;
     return `${folderName}/${fileKey}`;
 }
 }
+
+//
+
+
  
