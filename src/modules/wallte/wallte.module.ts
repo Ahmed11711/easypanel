@@ -14,11 +14,13 @@ import { ContractService } from '../contract/service/contract.service';
 import { ContractModule } from '../contract/contract.module';
 import { AffiliateModule } from '../affiliate/afflite.module';
 // import { ContractService } from '../../contract/service/contract.service';
+import { UserWaalteModule } from 'src/modules/user-wallte/userWallte.module';
+
 
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Wallet,BuyWallet,ProfitWallte]),UserModule,ShareModule,ContractModule,AffiliateModule],
+  imports: [TypeOrmModule.forFeature([Wallet,BuyWallet,ProfitWallte]),UserModule,ShareModule,ContractModule,AffiliateModule,UserWaalteModule],
   controllers: [WalletController],
   providers: [WalletService,PaginationService, PdfService],
   exports: [WalletService],

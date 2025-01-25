@@ -21,12 +21,13 @@ var share_module_1 = require("../shares/share.module");
 var contract_module_1 = require("../contract/contract.module");
 var afflite_module_1 = require("../affiliate/afflite.module");
 // import { ContractService } from '../../contract/service/contract.service';
+var userWallte_module_1 = require("src/modules/user-wallte/userWallte.module");
 var WalletModule = /** @class */ (function () {
     function WalletModule() {
     }
     WalletModule = __decorate([
         common_1.Module({
-            imports: [typeorm_1.TypeOrmModule.forFeature([wallet_entity_1.Wallet, buyWallet_entity_1.BuyWallet, profitWallte_entity_1.ProfitWallte]), user_module_1.UserModule, share_module_1.ShareModule, contract_module_1.ContractModule, afflite_module_1.AffiliateModule],
+            imports: [typeorm_1.TypeOrmModule.forFeature([wallet_entity_1.Wallet, buyWallet_entity_1.BuyWallet, profitWallte_entity_1.ProfitWallte]), user_module_1.UserModule, share_module_1.ShareModule, contract_module_1.ContractModule, afflite_module_1.AffiliateModule, userWallte_module_1.UserWaalteModule],
             controllers: [wallte_controller_1.WalletController],
             providers: [wallte_service_1.WalletService, pagination_service_1.PaginationService, create_pdf_service_1.PdfService],
             exports: [wallte_service_1.WalletService]

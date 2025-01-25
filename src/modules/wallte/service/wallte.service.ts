@@ -18,6 +18,8 @@ import axios from 'axios';
 import { ContractService } from '../../contract/service/contract.service';
 import { AffiliateService } from '../../affiliate/service/Affiliate.service';
 import { DataSource } from 'typeorm';
+import { UserWallteService } from 'src/modules/user-wallte/service/userWallte.service';
+
 
 @Injectable()
 export class WalletService {
@@ -34,6 +36,8 @@ export class WalletService {
     private readonly contractService: ContractService,
     private readonly affiliateService: AffiliateService,
     private dataSource: DataSource,
+    private userWallteBlockchain :UserWallteService
+
   ) {}
 
   async getWallte(data: any) {
@@ -111,6 +115,8 @@ export class WalletService {
 
 
     const userForBuy = await this.userService.getUserById(user.userId);
+    const userWallteBlockchain=await this.userWallteBlockchain.myBlnceOfTron(user.userId)
+
 
     if (!userForBuy) {
       throw new ConflictException(
@@ -120,9 +126,9 @@ export class WalletService {
 
     // const totalCost = numberUnitBuy * wallet.price;
 
-    if (userForBuy.money < totalCost) {
+    if (userWallteBlockchain < totalCost) {
       throw new ConflictException(
-        `User with ID ${user.email} does not have sufficient funds. Required: ${totalCost}, Available: ${userForBuy.money}`,
+        `User with ID ${user.email} does not have sufficient funds. Required: ${totalCost}, Available: ${userWallteBlockchain}`,
       );
     }
    
@@ -144,7 +150,7 @@ export class WalletService {
           // const updateWallet = await this.updateWallet(wallet, numberUnitBuy, queryRunner);
   
           // 4- update money from userService
-          const updateMoney = await this.updateMoney(user, totalCost, queryRunner);
+          // const updateMoney = await this.updateMoney(user, totalCost, queryRunner);
   
           // 5- create new Affiliate
           // const checkAffiliate = await this.createAffiliateHistory(user.userId, userForBuy.comming_afflite, numberUnitBuy, totalCost, wallet.id, queryRunner); // ++

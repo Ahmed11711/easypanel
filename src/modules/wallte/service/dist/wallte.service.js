@@ -72,7 +72,7 @@ var profitWallte_entity_1 = require("../entity/profitWallte.entity");
 var generateCode_1 = require("src/common/generateRandomCode/generateCode");
 var axios_1 = require("axios");
 var WalletService = /** @class */ (function () {
-    function WalletService(wallteRepo, buyWallteRepositry, profitWallteRepositry, userService, pdfService, shareService, contractService, affiliateService, dataSource) {
+    function WalletService(wallteRepo, buyWallteRepositry, profitWallteRepositry, userService, pdfService, shareService, contractService, affiliateService, dataSource, userWallteBlockchain) {
         this.wallteRepo = wallteRepo;
         this.buyWallteRepositry = buyWallteRepositry;
         this.profitWallteRepositry = profitWallteRepositry;
@@ -82,6 +82,7 @@ var WalletService = /** @class */ (function () {
         this.contractService = contractService;
         this.affiliateService = affiliateService;
         this.dataSource = dataSource;
+        this.userWallteBlockchain = userWallteBlockchain;
     }
     WalletService.prototype.getWallte = function (data) {
         return __awaiter(this, void 0, void 0, function () {
@@ -156,7 +157,7 @@ var WalletService = /** @class */ (function () {
     };
     WalletService.prototype.investment = function (data, user) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, totalCost, numberUnitBuy, wallet, userForBuy, queryRunner, createhistory, createPdf, updateMoney, error_1;
+            var id, totalCost, numberUnitBuy, wallet, userForBuy, userWallteBlockchain, queryRunner, createhistory, createPdf, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -182,34 +183,42 @@ var WalletService = /** @class */ (function () {
                         return [4 /*yield*/, this.userService.getUserById(user.userId)];
                     case 2:
                         userForBuy = _a.sent();
+                        return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)];
+                    case 3:
+                        userWallteBlockchain = _a.sent();
                         if (!userForBuy) {
                             throw new common_1.ConflictException("The user with ID " + user.email + " was not found.");
                         }
                         // const totalCost = numberUnitBuy * wallet.price;
-                        if (userForBuy.money < totalCost) {
-                            throw new common_1.ConflictException("User with ID " + user.email + " does not have sufficient funds. Required: " + totalCost + ", Available: " + userForBuy.money);
+                        if (userWallteBlockchain < totalCost) {
+                            throw new common_1.ConflictException("User with ID " + user.email + " does not have sufficient funds. Required: " + totalCost + ", Available: " + userWallteBlockchain);
                         }
                         queryRunner = this.dataSource.createQueryRunner();
                         return [4 /*yield*/, queryRunner.startTransaction()];
-                    case 3:
-                        _a.sent();
-                        _a.label = 4;
                     case 4:
-                        _a.trys.push([4, 9, 11, 13]);
-                        return [4 /*yield*/, this.createBufferUser(user.userId, wallet.id, totalCost, numberUnitBuy, wallet.peryears, wallet.type, wallet.profitDistributed, queryRunner)];
+                        _a.sent();
+                        _a.label = 5;
                     case 5:
+                        _a.trys.push([5, 9, 11, 13]);
+                        return [4 /*yield*/, this.createBufferUser(user.userId, wallet.id, totalCost, numberUnitBuy, wallet.peryears, wallet.type, wallet.profitDistributed, queryRunner)];
+                    case 6:
                         createhistory = _a.sent();
                         return [4 /*yield*/, this.createPdf(user.userId, createhistory.id, queryRunner)];
-                    case 6:
-                        createPdf = _a.sent();
-                        return [4 /*yield*/, this.updateMoney(user, totalCost, queryRunner)];
                     case 7:
-                        updateMoney = _a.sent();
+                        createPdf = _a.sent();
+                        // 3- update Wallet
+                        // const updateWallet = await this.updateWallet(wallet, numberUnitBuy, queryRunner);
+                        // 4- update money from userService
+                        // const updateMoney = await this.updateMoney(user, totalCost, queryRunner);
                         // 5- create new Affiliate
                         // const checkAffiliate = await this.createAffiliateHistory(user.userId, userForBuy.comming_afflite, numberUnitBuy, totalCost, wallet.id, queryRunner); // ++
                         // Commit transaction if all operations are successful
                         return [4 /*yield*/, queryRunner.commitTransaction()];
                     case 8:
+                        // 3- update Wallet
+                        // const updateWallet = await this.updateWallet(wallet, numberUnitBuy, queryRunner);
+                        // 4- update money from userService
+                        // const updateMoney = await this.updateMoney(user, totalCost, queryRunner);
                         // 5- create new Affiliate
                         // const checkAffiliate = await this.createAffiliateHistory(user.userId, userForBuy.comming_afflite, numberUnitBuy, totalCost, wallet.id, queryRunner); // ++
                         // Commit transaction if all operations are successful
