@@ -116,12 +116,11 @@ var UserWallteService = /** @class */ (function () {
                         url = "https://api.trongrid.io/v1/accounts/" + address + "/transactions/trc20/?limit=" + actualLimit;
                         _a.label = 2;
                     case 2:
-                        _a.trys.push([2, 8, , 9]);
+                        _a.trys.push([2, 5, , 6]);
                         return [4 /*yield*/, axios_1["default"].get(url)];
                     case 3:
                         response = _a.sent();
                         allTransactions = response.data.data;
-                        console.log(allTransactions);
                         if (!Array.isArray(allTransactions)) {
                             throw new Error('Unexpected response format');
                         }
@@ -135,21 +134,22 @@ var UserWallteService = /** @class */ (function () {
                         return [4 /*yield*/, this.storeFilteredTransactions(filteredTransactions, address, user_id)];
                     case 4:
                         newDeposite = _a.sent();
-                        if (!(newDeposite && newDeposite == 0)) return [3 /*break*/, 5];
-                        return [2 /*return*/, {
-                                message: 'Total amount is 0 or less.'
-                            }];
-                    case 5: return [4 /*yield*/, this.userService.addMoney(user_id, newDeposite)];
-                    case 6:
-                        _a.sent();
-                        return [2 /*return*/, {
-                                message: "You made a deposit of " + newDeposite + "."
-                            }];
-                    case 7: return [3 /*break*/, 9];
-                    case 8:
+                        if (newDeposite && newDeposite == 0) {
+                            return [2 /*return*/, {
+                                    message: 'Total amount is 0 or less.'
+                                }];
+                        }
+                        else {
+                            // await this.userService.addMoney(user_id, newDeposite);
+                            return [2 /*return*/, {
+                                    message: "You made a deposit of " + newDeposite + "."
+                                }];
+                        }
+                        return [3 /*break*/, 6];
+                    case 5:
                         error_1 = _a.sent();
                         throw new common_1.NotFoundException('Failed to fetch transaction logs', error_1);
-                    case 9: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });

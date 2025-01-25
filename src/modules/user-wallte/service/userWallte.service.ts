@@ -82,7 +82,7 @@ export class UserWallteService {
     try {
       const response = await axios.get(url);
       const allTransactions = response.data.data;
-      console.log(allTransactions);
+     
 
       if (!Array.isArray(allTransactions)) {
         throw new Error('Unexpected response format');
@@ -108,7 +108,7 @@ export class UserWallteService {
           message: 'Total amount is 0 or less.',
         };
       } else {
-        await this.userService.addMoney(user_id, newDeposite);
+        // await this.userService.addMoney(user_id, newDeposite);
 
         return {
           message: `You made a deposit of ${newDeposite}.`,
