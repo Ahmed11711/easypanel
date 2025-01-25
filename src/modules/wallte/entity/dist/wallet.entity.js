@@ -83,6 +83,9 @@ var Wallet = /** @class */ (function () {
         typeorm_1.JoinColumn({ name: 'asiangmanet' })
     ], Wallet.prototype, "devolper");
     __decorate([
+        typeorm_1.Column()
+    ], Wallet.prototype, "periodType");
+    __decorate([
         typeorm_1.CreateDateColumn({ type: 'timestamp' })
     ], Wallet.prototype, "created_at");
     __decorate([

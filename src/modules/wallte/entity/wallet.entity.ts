@@ -92,6 +92,10 @@ export class Wallet {
   @JoinColumn({ name: 'asiangmanet' })
   devolper: Devolper;
 
+
+  @Column()
+  periodType: string;
+
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
