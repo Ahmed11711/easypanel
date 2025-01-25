@@ -3,6 +3,7 @@ import { WithDrawService } from "../service/withdraw.service";
 import { GetCurrentUser } from "src/modules/auth/decorator/get-current-user";
 import { IJWTpayload } from "src/modules/auth/interface/login.payload";
 import { OrderWithdraw } from "../dto/withdraw.dto";
+import { WithdrawByBank } from "../dto/withdrawByBank.dto";
 
 @Controller('withdraw')
 
@@ -24,9 +25,9 @@ export class WithDrawController{
 
     }
     @Post('orderByBank')
-    async withdrawBank(@Body() data:OrderWithdraw ,@GetCurrentUser() user:IJWTpayload){
+    async withdrawBank(@Body() data:WithdrawByBank ,@GetCurrentUser() user:IJWTpayload){
          
-         return await this.withdrawService.order(data,user)
+         return await this.withdrawService.orderByBank(data,user)
  
      }
 }
