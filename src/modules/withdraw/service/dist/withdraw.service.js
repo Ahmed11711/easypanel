@@ -85,29 +85,36 @@ var WithDrawService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.pinCodeService.checkVerfied(data, user)];
                     case 1:
                         pinCode = _a.sent();
-                        if (!(data.type == typeWithdraw_enum_1.TypeWithdrawEnum.PROFIT)) return [3 /*break*/, 6];
+                        if (!(data.type === typeWithdraw_enum_1.TypeWithdrawEnum.PROFIT)) return [3 /*break*/, 6];
                         return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, data.amount)];
                     case 2:
                         checkMoney = _a.sent();
                         if (!checkMoney) return [3 /*break*/, 4];
+                        // Proceed with transaction storage if the balance is sufficient
                         return [4 /*yield*/, this.storeTransactionDB(data.amount, user.userId, data.publicAddress)];
                     case 3:
+                        // Proceed with transaction storage if the balance is sufficient
                         _a.sent();
                         return [2 /*return*/, {
-                                message: "success for withdraw"
+                                message: "Success for profit withdrawal"
                             }];
-                    case 4: throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
+                    case 4: 
+                    // Handle insufficient funds for profit withdrawal
+                    throw new common_1.HttpException('You don\'t have enough balance to withdraw profit. Please try again later.', common_1.HttpStatus.CONFLICT);
                     case 5: return [3 /*break*/, 10];
                     case 6: return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)];
                     case 7:
                         userWallteBlockchain = _a.sent();
-                        if (!(data.amount < userWallteBlockchain)) return [3 /*break*/, 8];
-                        throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
-                    case 8: return [4 /*yield*/, this.storeTransactionDB(data.amount, user.userId, data.publicAddress)];
+                        if (!(Number(data.amount) > Number(userWallteBlockchain))) return [3 /*break*/, 8];
+                        throw new common_1.HttpException('You don\'t have enough balance for withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
+                    case 8: 
+                    // Proceed with transaction storage if the balance is sufficient
+                    return [4 /*yield*/, this.storeTransactionDB(data.amount, user.userId, data.publicAddress)];
                     case 9:
+                        // Proceed with transaction storage if the balance is sufficient
                         _a.sent();
                         return [2 /*return*/, {
-                                message: "success for withdraw"
+                                message: "Success for money withdrawal"
                             }];
                     case 10: return [2 /*return*/];
                 }

@@ -48,58 +48,54 @@ export class WithDrawService{
      return paginationData
      }
 
-     async order(data:OrderWithdraw,user:IJWTpayload):Promise<{message:string}>{
-      
-      
-
-      const pinCode= await this.pinCodeService.checkVerfied(data,user);
-
-      // check if money or prfoit
-      if(data.type==TypeWithdrawEnum.PROFIT)
-      {
-        const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
-        if(checkMoney){
-
-          await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
-   
+     async order(data: OrderWithdraw, user: IJWTpayload): Promise<{ message: string }> {
+      // Step 1: Verify Pin Code
+      const pinCode = await this.pinCodeService.checkVerfied(data, user);
+    
+      // Step 2: Check if the withdrawal type is PROFIT or MONEY
+      if (data.type === TypeWithdrawEnum.PROFIT) {
+        // Check if the user has enough balance for the withdrawal
+        const checkMoney = await this.userService.checkmyMoneyWithUpdate(user, data.amount);
+        
+        if (checkMoney) {
+          // Proceed with transaction storage if the balance is sufficient
+          await this.storeTransactionDB(data.amount, user.userId, data.publicAddress);
           return {
-           message :"success for withdraw"
-          }
-         }else{
-           throw new HttpException(
-             'You dont have enough balance withdrawal. Please try again later.',
-             HttpStatus.CONFLICT,
-           );  
-         
-         }
-       
-
-      }else{
-        // const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
-        const userWallteBlockchain=await this.userWallteBlockchain.myBlnceOfTron(user.userId)
-
-        if (data.amount < userWallteBlockchain) {
+            message: "Success for profit withdrawal",
+          };
+        } else {
+          // Handle insufficient funds for profit withdrawal
           throw new HttpException(
-            'You dont have enough balance withdrawal. Please try again later.',
+            'You don\'t have enough balance to withdraw profit. Please try again later.',
             HttpStatus.CONFLICT,
-          );  
-            }else{
-              await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
-   
-              return {
-               message :"success for withdraw"
-              }
-            }
-
+          );
+        }
+      } else {
+        // Money withdrawal (when data.type is not 'PROFIT')
+        const userWallteBlockchain = await this.userWallteBlockchain.myBlnceOfTron(user.userId);
+    
+        // Ensure proper comparison of numeric values (make sure `userWallteBlockchain` is a number)
+        if (Number(data.amount) > Number(userWallteBlockchain)) {
+          throw new HttpException(
+            'You don\'t have enough balance for withdrawal. Please try again later.',
+            HttpStatus.CONFLICT,
+          );
+        } else {
+          // Proceed with transaction storage if the balance is sufficient
+          await this.storeTransactionDB(data.amount, user.userId, data.publicAddress);
+          return {
+            message: "Success for money withdrawal",
+          };
+        }
       }
-
-
+    }
+    
        
  
 
      
       
-     }
+    
       async storeTransactionDB(amount:number,userId:number,Visa_number:string):Promise<void>{
 
         const createTransaction=this.withdrawRepositry.create({ 
