@@ -52,10 +52,12 @@ var withdraw_entinty_1 = require("../entity/withdraw.entinty");
 var generateCode_1 = require("src/common/generateRandomCode/generateCode");
 var withdraw_enum_1 = require("../enum/withdraw.enum");
 var notifaction_enum_1 = require("src/modules/notfication/enum/notifaction.enum");
+var withdrawByBank_dto_1 = require("../dto/withdrawByBank.dto");
 var typeWithdraw_enum_1 = require("../enum/typeWithdraw.enum");
 var WithDrawService = /** @class */ (function () {
-    function WithDrawService(withdrawRepositry, paginationService, pinCodeService, userService, notficationService, userWallteBlockchain) {
+    function WithDrawService(withdrawRepositry, withdrawRepositryByBank, paginationService, pinCodeService, userService, notficationService, userWallteBlockchain) {
         this.withdrawRepositry = withdrawRepositry;
+        this.withdrawRepositryByBank = withdrawRepositryByBank;
         this.paginationService = paginationService;
         this.pinCodeService = pinCodeService;
         this.userService = userService;
@@ -157,23 +159,35 @@ var WithDrawService = /** @class */ (function () {
                         return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, data.amount)];
                     case 2:
                         checkMoney = _a.sent();
-                        if (checkMoney) {
-                            // await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
-                            return [2 /*return*/, {
-                                    message: "success for withdraw"
-                                }];
-                        }
-                        else {
-                            throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
-                        }
-                        return [2 /*return*/];
+                        if (!checkMoney) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.storeTransactionDByBank(data, user)];
+                    case 3:
+                        _a.sent();
+                        return [2 /*return*/, {
+                                message: "success for withdraw"
+                            }];
+                    case 4: throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
                 }
+            });
+        });
+    };
+    WithDrawService.prototype.storeTransactionDByBank = function (data, user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var createTransaction;
+            return __generator(this, function (_a) {
+                createTransaction = this.withdrawRepositryByBank.create({
+                    amount: data.amount,
+                    bankName: data.bankName,
+                    bankAccountName: data.bankAccountName
+                });
+                return [2 /*return*/, this.withdrawRepositryByBank.save(createTransaction)];
             });
         });
     };
     WithDrawService = __decorate([
         common_1.Injectable(),
-        __param(0, typeorm_1.InjectRepository(withdraw_entinty_1.Withdraw))
+        __param(0, typeorm_1.InjectRepository(withdraw_entinty_1.Withdraw)),
+        __param(1, typeorm_1.InjectRepository(withdrawByBank_dto_1.WithdrawByBank))
     ], WithDrawService);
     return WithDrawService;
 }());

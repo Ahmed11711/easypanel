@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, MaxLength, MinLength } from "class-validator";
 
-export class WithdrawBank{
+export class WithdrawByBank{
 
      @IsNotEmpty()
     amount:number

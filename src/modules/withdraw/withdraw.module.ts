@@ -9,10 +9,11 @@ import { UserService } from "../user/service/user.service";
 import { UserModule } from "../user/user.module";
 import { NotficatioModule } from "../notfication/notfication.module";
 import { UserWaalteModule } from 'src/modules/user-wallte/userWallte.module';
+import { WithdrawByBank } from "./entity/withdrawBank.entity";
 
 
 @Module({
-    imports:[TypeOrmModule.forFeature([Withdraw]),PinCodeModule,UserModule,NotficatioModule,UserWaalteModule],
+    imports:[TypeOrmModule.forFeature([Withdraw,WithdrawByBank]),PinCodeModule,UserModule,NotficatioModule,UserWaalteModule],
     controllers:[WithDrawController],
     providers:[WithDrawService,PaginationService],
     exports:[WithDrawService]

@@ -17,12 +17,13 @@ var pinCode_module_1 = require("../pin-code/pinCode.module");
 var user_module_1 = require("../user/user.module");
 var notfication_module_1 = require("../notfication/notfication.module");
 var userWallte_module_1 = require("src/modules/user-wallte/userWallte.module");
+var withdrawBank_entity_1 = require("./entity/withdrawBank.entity");
 var WithdrawModule = /** @class */ (function () {
     function WithdrawModule() {
     }
     WithdrawModule = __decorate([
         common_1.Module({
-            imports: [typeorm_1.TypeOrmModule.forFeature([withdraw_entinty_1.Withdraw]), pinCode_module_1.PinCodeModule, user_module_1.UserModule, notfication_module_1.NotficatioModule, userWallte_module_1.UserWaalteModule],
+            imports: [typeorm_1.TypeOrmModule.forFeature([withdraw_entinty_1.Withdraw, withdrawBank_entity_1.WithdrawByBank]), pinCode_module_1.PinCodeModule, user_module_1.UserModule, notfication_module_1.NotficatioModule, userWallte_module_1.UserWaalteModule],
             controllers: [withdraw_controller_1.WithDrawController],
             providers: [withdraw_service_1.WithDrawService, pagination_service_1.PaginationService],
             exports: [withdraw_service_1.WithDrawService]

@@ -7,27 +7,44 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.WithdrawByBank = void 0;
-var class_validator_1 = require("class-validator");
+var typeorm_1 = require("typeorm");
+var typeWithdraw_enum_1 = require("../enum/typeWithdraw.enum");
 var WithdrawByBank = /** @class */ (function () {
     function WithdrawByBank() {
     }
     __decorate([
-        class_validator_1.IsNotEmpty()
-    ], WithdrawByBank.prototype, "amount");
+        typeorm_1.PrimaryGeneratedColumn()
+    ], WithdrawByBank.prototype, "id");
     __decorate([
-        class_validator_1.IsNotEmpty()
+        typeorm_1.Column()
     ], WithdrawByBank.prototype, "bankName");
     __decorate([
-        class_validator_1.IsNotEmpty()
+        typeorm_1.Column()
     ], WithdrawByBank.prototype, "bankAccountName");
     __decorate([
-        class_validator_1.IsNotEmpty()
+        typeorm_1.Column()
     ], WithdrawByBank.prototype, "ibanBank");
     __decorate([
-        class_validator_1.IsNotEmpty(),
-        class_validator_1.MinLength(6),
-        class_validator_1.MaxLength(6)
-    ], WithdrawByBank.prototype, "pinCode");
+        typeorm_1.Column()
+    ], WithdrawByBank.prototype, "amount");
+    __decorate([
+        typeorm_1.Column({
+            type: 'enum',
+            "enum": typeWithdraw_enum_1.TypeWithdrawEnum
+        })
+    ], WithdrawByBank.prototype, "status");
+    __decorate([
+        typeorm_1.Column()
+    ], WithdrawByBank.prototype, "user_id");
+    __decorate([
+        typeorm_1.CreateDateColumn()
+    ], WithdrawByBank.prototype, "created_at");
+    __decorate([
+        typeorm_1.UpdateDateColumn()
+    ], WithdrawByBank.prototype, "updated_at");
+    WithdrawByBank = __decorate([
+        typeorm_1.Entity('withdraw_by_banks')
+    ], WithdrawByBank);
     return WithdrawByBank;
 }());
 exports.WithdrawByBank = WithdrawByBank;

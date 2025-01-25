@@ -14,7 +14,7 @@ import { generateRandomAlphanumeric } from 'src/common/generateRandomCode/genera
 import { TypeWithdraw } from "../enum/withdraw.enum";
 import { NotficationService } from "src/modules/notfication/service/notication.service";
 import { NotficationType } from "src/modules/notfication/enum/notifaction.enum";
-import { WithdrawBank } from "../dto/withdrawByBank.dto";
+import { WithdrawByBank } from "../dto/withdrawByBank.dto";
 import { TypeWithdrawEnum } from "../enum/typeWithdraw.enum";
 import { UserWallteService } from 'src/modules/user-wallte/service/userWallte.service';
 
@@ -26,6 +26,9 @@ export class WithDrawService{
     constructor(
         @InjectRepository(Withdraw)
         private readonly withdrawRepositry: Repository<Withdraw>,
+        @InjectRepository(WithdrawByBank)
+
+        private readonly withdrawRepositryByBank: Repository<WithdrawByBank>,
         private readonly paginationService: PaginationService,
         private readonly pinCodeService:PinCodeService,
         private readonly userService:UserService,
@@ -114,7 +117,7 @@ export class WithDrawService{
       
       }
 
-      async orderByBank(data:WithdrawBank,user:IJWTpayload):Promise<{message:string}>{
+      async orderByBank(data:WithdrawByBank,user:IJWTpayload):Promise<{message:string}>{
       
   
        const pinCode= await this.pinCodeService.checkVerfied(data,user);
@@ -123,7 +126,7 @@ export class WithDrawService{
  
        if(checkMoney){
  
-        // await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
+        await this.storeTransactionDByBank(data,user)
  
         return {
          message :"success for withdraw"
@@ -137,5 +140,22 @@ export class WithDrawService{
        
       }
 
+      async storeTransactionDByBank(data:WithdrawByBank,user){
+     
+        // Create a new transaction with validated data
+        const createTransaction = this.withdrawRepositryByBank.create({
+          amount:data.amount,
+          bankName: data.bankName,   
+          bankAccountName: data.bankAccountName,
+          // status: TypeWithdraw.PENDING,  
+          // user_id: user.userId,
+ 
+        });
+    
+ 
+        return this.withdrawRepositryByBank.save(createTransaction);
+      }
+      }
+
   
-    }
+   
