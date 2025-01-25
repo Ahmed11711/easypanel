@@ -36,7 +36,7 @@ export class Wallet {
   @Column({ type: 'int', default: 0 })
   sold: number;
 
-  @Column()
+  @Column('float') 
   percentage: number;
 
   @Column()

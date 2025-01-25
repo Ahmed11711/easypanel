@@ -35,7 +35,7 @@ var Wallet = /** @class */ (function () {
         typeorm_1.Column({ type: 'int', "default": 0 })
     ], Wallet.prototype, "sold");
     __decorate([
-        typeorm_1.Column()
+        typeorm_1.Column('float')
     ], Wallet.prototype, "percentage");
     __decorate([
         typeorm_1.Column()
