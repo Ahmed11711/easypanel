@@ -19,6 +19,8 @@ import { ContractService } from '../../contract/service/contract.service';
 import { AffiliateService } from '../../affiliate/service/Affiliate.service';
 import { DataSource } from 'typeorm';
 import { UserWallteService } from 'src/modules/user-wallte/service/userWallte.service';
+import { UpdateInvestDto } from '../dto/update.dto';
+import { StatusWallte } from '../enum/statusWallte.enum';
 
 
 @Injectable()
@@ -290,5 +292,42 @@ export class WalletService {
     const reward = await this.affiliateService.getAllRewardByGen(gen);
 
     await this.userService.addMoneyReward(uplineId, amount, queryRunner);
+  }
+
+
+  async updateInvest(data: UpdateInvestDto, user: IJWTpayload) {
+    const id = data.walletId;
+    const status = data.status;
+  
+
+    // Check if the wallet exists
+    const wallet = await this.buyWallteRepositry.findOneBy({ id });
+
+    if (!wallet) {
+      throw new ConflictException(`Wallet with ID ${id} not found`);
+    }
+
+    if (wallet.user_id !== user.userId) {
+      throw new ConflictException(`You are not authorized to update this wallet`);
+    }
+    if (wallet.finsh_quarter !== StatusWallte.LAUNCHED) {
+      throw new ConflictException(`The wallet must be in LAUNCHED status to be updated`);
+    }
+    wallet.finsh_quarter = status;
+
+    // You can also update other fields like so:
+    // wallet.otherField = data.otherField;
+  
+    // Optionally, you can check if the status is valid before saving the update
+    if (!Object.values(StatusWallte).includes(status)) {
+      throw new ConflictException(`Invalid status value: ${status}`);
+    }
+  
+    // Save the updated wallet
+    await this.buyWallteRepositry.save(wallet);
+
+    return { message: ' Updated Investment successful' };
+
+
   }
 }

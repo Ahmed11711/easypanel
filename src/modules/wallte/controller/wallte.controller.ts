@@ -1,9 +1,10 @@
-import { Controller, Get, Post,Query ,Body,Param} from '@nestjs/common';
+import { Controller, Get, Post,Query ,Body,Param, Put} from '@nestjs/common';
 import { WalletService } from '../service/wallte.service';
 import {WallteTypeDto} from '../dto/wallteType.dto';
 import { IJWTpayload } from 'src/modules/auth/interface/login.payload';
 import { GetCurrentUser } from 'src/modules/auth/decorator/get-current-user';
 import { InvestDto } from '../dto/invest.dtot';
+import { UpdateInvestDto } from '../dto/update.dto';
  
 @Controller('wallte')
 export class WalletController {
@@ -43,5 +44,13 @@ export class WalletController {
     // return user;
      return this.walletService.investment(data,user)
   }
+
+  @Post('update-invest')
+  investUpdate(@Body() data :UpdateInvestDto ,@GetCurrentUser() user:IJWTpayload){
+ 
+    // return user;
+     return this.walletService.updateInvest(data,user)
+  }
+ 
  
 }

@@ -71,6 +71,7 @@ var buyWallet_entity_1 = require("../entity/buyWallet.entity");
 var profitWallte_entity_1 = require("../entity/profitWallte.entity");
 var generateCode_1 = require("src/common/generateRandomCode/generateCode");
 var axios_1 = require("axios");
+var statusWallte_enum_1 = require("../enum/statusWallte.enum");
 var WalletService = /** @class */ (function () {
     function WalletService(wallteRepo, buyWallteRepositry, profitWallteRepositry, userService, pdfService, shareService, contractService, affiliateService, dataSource, userWallteBlockchain) {
         this.wallteRepo = wallteRepo;
@@ -375,6 +376,43 @@ var WalletService = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    WalletService.prototype.updateInvest = function (data, user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, status, wallet;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = data.walletId;
+                        status = data.status;
+                        return [4 /*yield*/, this.buyWallteRepositry.findOneBy({ id: id })];
+                    case 1:
+                        wallet = _a.sent();
+                        if (!wallet) {
+                            throw new common_1.ConflictException("Wallet with ID " + id + " not found");
+                        }
+                        if (wallet.user_id !== user.userId) {
+                            throw new common_1.ConflictException("You are not authorized to update this wallet");
+                        }
+                        if (wallet.finsh_quarter !== statusWallte_enum_1.StatusWallte.LAUNCHED) {
+                            throw new common_1.ConflictException("The wallet must be in LAUNCHED status to be updated");
+                        }
+                        wallet.finsh_quarter = status;
+                        // You can also update other fields like so:
+                        // wallet.otherField = data.otherField;
+                        // Optionally, you can check if the status is valid before saving the update
+                        if (!Object.values(statusWallte_enum_1.StatusWallte).includes(status)) {
+                            throw new common_1.ConflictException("Invalid status value: " + status);
+                        }
+                        // Save the updated wallet
+                        return [4 /*yield*/, this.buyWallteRepositry.save(wallet)];
+                    case 2:
+                        // Save the updated wallet
+                        _a.sent();
+                        return [2 /*return*/, { message: ' Updated Investment successful' }];
                 }
             });
         });

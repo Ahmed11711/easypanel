@@ -32,6 +32,10 @@ var WalletController = /** @class */ (function () {
         // return user;
         return this.walletService.investment(data, user);
     };
+    WalletController.prototype.investUpdate = function (data, user) {
+        // return user;
+        return this.walletService.updateInvest(data, user);
+    };
     __decorate([
         common_1.Post(),
         __param(0, common_1.Body())
@@ -52,6 +56,10 @@ var WalletController = /** @class */ (function () {
         common_1.Post('invest'),
         __param(0, common_1.Body()), __param(1, get_current_user_1.GetCurrentUser())
     ], WalletController.prototype, "invest");
+    __decorate([
+        common_1.Post('update-invest'),
+        __param(0, common_1.Body()), __param(1, get_current_user_1.GetCurrentUser())
+    ], WalletController.prototype, "investUpdate");
     WalletController = __decorate([
         common_1.Controller('wallte')
     ], WalletController);
