@@ -1,6 +1,6 @@
 import {  HttpException, Injectable ,HttpStatus } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Withdraw } from '../entity/withdraw.entinty';
+import { Withdraw } from '../entity/withdraw.entity';
 import { Repository } from 'typeorm';
 import { IJWTpayload } from "src/modules/auth/interface/login.payload";
 import { IWithdraw } from "../interface/withdraw.interface";
@@ -14,9 +14,10 @@ import { generateRandomAlphanumeric } from 'src/common/generateRandomCode/genera
 import { TypeWithdraw } from "../enum/withdraw.enum";
 import { NotficationService } from "src/modules/notfication/service/notication.service";
 import { NotficationType } from "src/modules/notfication/enum/notifaction.enum";
-import { WithdrawByBank } from "../dto/withdrawByBank.dto";
+import { WithdrawByBankDto } from "../dto/withdrawByBank.dto";
 import { TypeWithdrawEnum } from "../enum/typeWithdraw.enum";
 import { UserWallteService } from 'src/modules/user-wallte/service/userWallte.service';
+import { WithdrawByBankss } from "../entity/withdrawByBanks.entity";
 
 @Injectable()
 
@@ -26,9 +27,8 @@ export class WithDrawService{
     constructor(
         @InjectRepository(Withdraw)
         private readonly withdrawRepositry: Repository<Withdraw>,
-        @InjectRepository(WithdrawByBank)
-
-        private readonly withdrawRepositryByBank: Repository<WithdrawByBank>,
+        @InjectRepository(WithdrawByBankss)
+        private   readonly withdrawRepositryByBank: Repository<WithdrawByBankss>,
         private readonly paginationService: PaginationService,
         private readonly pinCodeService:PinCodeService,
         private readonly userService:UserService,
@@ -117,10 +117,11 @@ export class WithDrawService{
       
       }
 
-      async orderByBank(data:WithdrawByBank,user:IJWTpayload):Promise<{message:string}>{
+      async orderByBank(data:WithdrawByBankDto,user:IJWTpayload):Promise<{message:string}>{
       
   
        const pinCode= await this.pinCodeService.checkVerfied(data,user);
+        
 
 
        if (data.type === TypeWithdrawEnum.PROFIT) {
@@ -143,7 +144,7 @@ export class WithDrawService{
 
        }else{
         const userWallteBlockchain = await this.userWallteBlockchain.myBlnceOfTron(user.userId);
-    
+      
         // Ensure proper comparison of numeric values (make sure `userWallteBlockchain` is a number)
         if (Number(data.amount) > Number(userWallteBlockchain)) {
           throw new HttpException(
@@ -169,20 +170,21 @@ export class WithDrawService{
        
       }
 
-      async storeTransactionDByBank(data:WithdrawByBank,user){
+      async storeTransactionDByBank(data:WithdrawByBankDto,user){
+    
      
         // Create a new transaction with validated data
-        const createTransaction = this.withdrawRepositryByBank.create({
-          amount:data.amount,
-          bankName: data.bankName,   
-          bankAccountName: data.bankAccountName,
-          // status: TypeWithdraw.PENDING,  
-          // user_id: user.userId,
- 
-        });
+           const createTransaction = this.withdrawRepositryByBank.create({
+            amount: data.amount,
+            bankName: data.bankName,
+            bankAccountName: data.bankAccountName,
+            user_id: user.userId,
+            ibanBank:data.ibanBank,
+          });
+         
     
  
-        return this.withdrawRepositryByBank.save(createTransaction);
+          await this.withdrawRepositryByBank.save(createTransaction);
       }
       }
 

@@ -13,7 +13,7 @@ import { UserKyc } from 'src/modules/userKyc/entity/userKyc.entity';
 import { Deposite } from 'src/modules/deposite/entity/deposite.entity';
 import { Notfication } from 'src/modules/notfication/entity/notifcation.entity';
 import { PinCodeEntity } from 'src/modules/pin-code/entity/pinCode.entity';
-import { Withdraw } from 'src/modules/withdraw/entity/withdraw.entinty';
+import { Withdraw } from 'src/modules/withdraw/entity/withdraw.entity';
 import { InvoiceEntity } from 'src/modules/cash-hand/entity/invoice.entity';
 import { MarketingFees } from 'src/modules/affiliate/entity/affilite.entity';
 

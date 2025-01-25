@@ -23,7 +23,8 @@ import { UserKyc } from 'src/modules/userKyc/entity/userKyc.entity';
 import { BuyWallet } from 'src/modules/wallte/entity/buyWallet.entity';
 import { ProfitWallte } from 'src/modules/wallte/entity/profitWallte.entity';
 import { Wallet } from 'src/modules/wallte/entity/wallet.entity';
-import { Withdraw } from 'src/modules/withdraw/entity/withdraw.entinty';
+import { Withdraw } from 'src/modules/withdraw/entity/withdraw.entity';
+import { WithdrawByBankss } from 'src/modules/withdraw/entity/withdrawByBanks.entity';
 
 export const databaseConfig: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -57,7 +58,8 @@ export const databaseConfig: TypeOrmModuleOptions = {
     MarketingFees,
     RewardAffiliate,
     ProfitShare,
-    PriceShare
+    PriceShare,
+    WithdrawByBankss
   ],
   synchronize: false,
 };

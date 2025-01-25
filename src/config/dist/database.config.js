@@ -25,7 +25,8 @@ var userKyc_entity_1 = require("src/modules/userKyc/entity/userKyc.entity");
 var buyWallet_entity_1 = require("src/modules/wallte/entity/buyWallet.entity");
 var profitWallte_entity_1 = require("src/modules/wallte/entity/profitWallte.entity");
 var wallet_entity_1 = require("src/modules/wallte/entity/wallet.entity");
-var withdraw_entinty_1 = require("src/modules/withdraw/entity/withdraw.entinty");
+var withdraw_entity_1 = require("src/modules/withdraw/entity/withdraw.entity");
+var withdrawByBanks_entity_1 = require("src/modules/withdraw/entity/withdrawByBanks.entity");
 exports.databaseConfig = {
     type: 'mysql',
     host: process.env.DB_HOST || 'localhost',
@@ -47,7 +48,7 @@ exports.databaseConfig = {
         wallet_entity_1.Wallet,
         projects_entity_1.Project,
         pinCode_entity_1.PinCodeEntity,
-        withdraw_entinty_1.Withdraw,
+        withdraw_entity_1.Withdraw,
         invoice_entity_1.InvoiceEntity,
         buyWallet_entity_1.BuyWallet,
         profitWallte_entity_1.ProfitWallte,
@@ -58,7 +59,8 @@ exports.databaseConfig = {
         affilite_entity_1.MarketingFees,
         RewardAffiliate_1.RewardAffiliate,
         profitShare_entity_1.ProfitShare,
-        price_share_entity_1.PriceShare
+        price_share_entity_1.PriceShare,
+        withdrawByBanks_entity_1.WithdrawByBankss
     ],
     synchronize: false
 };

@@ -13,7 +13,7 @@ import { TypeWithdraw } from '../enum/withdraw.enum';
 import { TypeWithdrawEnum } from '../enum/typeWithdraw.enum';
 
 @Entity('withdraw_by_banks')
-export class WithdrawByBank {
+export class WithdrawByBankss {
     @PrimaryGeneratedColumn()
     id: number;
   
@@ -29,15 +29,9 @@ export class WithdrawByBank {
     @Column()  
     amount: number;
 
-    @Column({
-        type: 'enum', 
-        enum: TypeWithdrawEnum,  
-       })
-      status: TypeWithdrawEnum;
 
-      @Column()  
+    @Column()
       user_id:number
-      
   @CreateDateColumn()
   created_at: Date;
 

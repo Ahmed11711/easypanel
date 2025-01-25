@@ -1,7 +1,7 @@
 import { IsEnum, IsNotEmpty, IsNumber, MaxLength, MinLength } from "class-validator";
 import { TypeWithdrawEnum } from "../enum/typeWithdraw.enum";
 
-export class WithdrawByBank{
+export class WithdrawByBankDto{
 
      @IsNotEmpty()
     amount:number

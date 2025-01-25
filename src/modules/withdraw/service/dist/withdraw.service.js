@@ -48,12 +48,12 @@ exports.__esModule = true;
 exports.WithDrawService = void 0;
 var common_1 = require("@nestjs/common");
 var typeorm_1 = require("@nestjs/typeorm");
-var withdraw_entinty_1 = require("../entity/withdraw.entinty");
+var withdraw_entity_1 = require("../entity/withdraw.entity");
 var generateCode_1 = require("src/common/generateRandomCode/generateCode");
 var withdraw_enum_1 = require("../enum/withdraw.enum");
 var notifaction_enum_1 = require("src/modules/notfication/enum/notifaction.enum");
-var withdrawByBank_dto_1 = require("../dto/withdrawByBank.dto");
 var typeWithdraw_enum_1 = require("../enum/typeWithdraw.enum");
+var withdrawByBanks_entity_1 = require("../entity/withdrawByBanks.entity");
 var WithDrawService = /** @class */ (function () {
     function WithDrawService(withdrawRepositry, withdrawRepositryByBank, paginationService, pinCodeService, userService, notficationService, userWallteBlockchain) {
         this.withdrawRepositry = withdrawRepositry;
@@ -192,19 +192,27 @@ var WithDrawService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var createTransaction;
             return __generator(this, function (_a) {
-                createTransaction = this.withdrawRepositryByBank.create({
-                    amount: data.amount,
-                    bankName: data.bankName,
-                    bankAccountName: data.bankAccountName
-                });
-                return [2 /*return*/, this.withdrawRepositryByBank.save(createTransaction)];
+                switch (_a.label) {
+                    case 0:
+                        createTransaction = this.withdrawRepositryByBank.create({
+                            amount: data.amount,
+                            bankName: data.bankName,
+                            bankAccountName: data.bankAccountName,
+                            user_id: user.userId,
+                            ibanBank: data.ibanBank
+                        });
+                        return [4 /*yield*/, this.withdrawRepositryByBank.save(createTransaction)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
     WithDrawService = __decorate([
         common_1.Injectable(),
-        __param(0, typeorm_1.InjectRepository(withdraw_entinty_1.Withdraw)),
-        __param(1, typeorm_1.InjectRepository(withdrawByBank_dto_1.WithdrawByBank))
+        __param(0, typeorm_1.InjectRepository(withdraw_entity_1.Withdraw)),
+        __param(1, typeorm_1.InjectRepository(withdrawByBanks_entity_1.WithdrawByBankss))
     ], WithDrawService);
     return WithDrawService;
 }());

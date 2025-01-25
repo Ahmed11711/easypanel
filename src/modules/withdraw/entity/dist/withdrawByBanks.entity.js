@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 exports.__esModule = true;
 exports.WithdrawByBankss = void 0;
 var typeorm_1 = require("typeorm");
-var typeWithdraw_enum_1 = require("../enum/typeWithdraw.enum");
 var WithdrawByBankss = /** @class */ (function () {
     function WithdrawByBankss() {
     }
@@ -27,12 +26,6 @@ var WithdrawByBankss = /** @class */ (function () {
     __decorate([
         typeorm_1.Column()
     ], WithdrawByBankss.prototype, "amount");
-    __decorate([
-        typeorm_1.Column({
-            type: 'enum',
-            "enum": typeWithdraw_enum_1.TypeWithdrawEnum
-        })
-    ], WithdrawByBankss.prototype, "status");
     __decorate([
         typeorm_1.Column()
     ], WithdrawByBankss.prototype, "user_id");

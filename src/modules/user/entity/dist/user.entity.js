@@ -13,7 +13,7 @@ var userKyc_entity_1 = require("src/modules/userKyc/entity/userKyc.entity");
 var deposite_entity_1 = require("src/modules/deposite/entity/deposite.entity");
 var notifcation_entity_1 = require("src/modules/notfication/entity/notifcation.entity");
 var pinCode_entity_1 = require("src/modules/pin-code/entity/pinCode.entity");
-var withdraw_entinty_1 = require("src/modules/withdraw/entity/withdraw.entinty");
+var withdraw_entity_1 = require("src/modules/withdraw/entity/withdraw.entity");
 var invoice_entity_1 = require("src/modules/cash-hand/entity/invoice.entity");
 var affilite_entity_1 = require("src/modules/affiliate/entity/affilite.entity");
 var User = /** @class */ (function () {
@@ -80,7 +80,7 @@ var User = /** @class */ (function () {
         typeorm_1.OneToMany(function () { return deposite_entity_1.Deposite; }, function (deposite) { return deposite.user; }, { cascade: true })
     ], User.prototype, "deposite");
     __decorate([
-        typeorm_1.OneToMany(function () { return withdraw_entinty_1.Withdraw; }, function (withdraw) { return withdraw.user; }, { cascade: true })
+        typeorm_1.OneToMany(function () { return withdraw_entity_1.Withdraw; }, function (withdraw) { return withdraw.user; }, { cascade: true })
     ], User.prototype, "withdraw");
     __decorate([
         typeorm_1.OneToMany(function () { return notifcation_entity_1.Notfication; }, function (notfication) { return notfication.user; })

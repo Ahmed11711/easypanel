@@ -6,33 +6,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
-exports.WithdrawByBank = void 0;
+exports.WithdrawByBankDto = void 0;
 var class_validator_1 = require("class-validator");
 var typeWithdraw_enum_1 = require("../enum/typeWithdraw.enum");
-var WithdrawByBank = /** @class */ (function () {
-    function WithdrawByBank() {
+var WithdrawByBankDto = /** @class */ (function () {
+    function WithdrawByBankDto() {
     }
     __decorate([
         class_validator_1.IsNotEmpty()
-    ], WithdrawByBank.prototype, "amount");
+    ], WithdrawByBankDto.prototype, "amount");
     __decorate([
         class_validator_1.IsNotEmpty()
-    ], WithdrawByBank.prototype, "bankName");
+    ], WithdrawByBankDto.prototype, "bankName");
     __decorate([
         class_validator_1.IsNotEmpty()
-    ], WithdrawByBank.prototype, "bankAccountName");
+    ], WithdrawByBankDto.prototype, "bankAccountName");
     __decorate([
         class_validator_1.IsNotEmpty()
-    ], WithdrawByBank.prototype, "ibanBank");
+    ], WithdrawByBankDto.prototype, "ibanBank");
     __decorate([
         class_validator_1.IsNotEmpty(),
         class_validator_1.MinLength(6),
         class_validator_1.MaxLength(6)
-    ], WithdrawByBank.prototype, "pinCode");
+    ], WithdrawByBankDto.prototype, "pinCode");
     __decorate([
         class_validator_1.IsNotEmpty(),
         class_validator_1.IsEnum(typeWithdraw_enum_1.TypeWithdrawEnum)
-    ], WithdrawByBank.prototype, "type");
-    return WithdrawByBank;
+    ], WithdrawByBankDto.prototype, "type");
+    return WithdrawByBankDto;
 }());
-exports.WithdrawByBank = WithdrawByBank;
+exports.WithdrawByBankDto = WithdrawByBankDto;
