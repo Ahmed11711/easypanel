@@ -8,9 +8,11 @@ import { PinCodeModule } from "../pin-code/pinCode.module";
 import { UserService } from "../user/service/user.service";
 import { UserModule } from "../user/user.module";
 import { NotficatioModule } from "../notfication/notfication.module";
+import { UserWaalteModule } from 'src/modules/user-wallte/userWallte.module';
+
 
 @Module({
-    imports:[TypeOrmModule.forFeature([Withdraw]),PinCodeModule,UserModule,NotficatioModule],
+    imports:[TypeOrmModule.forFeature([Withdraw]),PinCodeModule,UserModule,NotficatioModule,UserWaalteModule],
     controllers:[WithDrawController],
     providers:[WithDrawService,PaginationService],
     exports:[WithDrawService]

@@ -52,13 +52,15 @@ var withdraw_entinty_1 = require("../entity/withdraw.entinty");
 var generateCode_1 = require("src/common/generateRandomCode/generateCode");
 var withdraw_enum_1 = require("../enum/withdraw.enum");
 var notifaction_enum_1 = require("src/modules/notfication/enum/notifaction.enum");
+var typeWithdraw_enum_1 = require("../enum/typeWithdraw.enum");
 var WithDrawService = /** @class */ (function () {
-    function WithDrawService(withdrawRepositry, paginationService, pinCodeService, userService, notficationService) {
+    function WithDrawService(withdrawRepositry, paginationService, pinCodeService, userService, notficationService, userWallteBlockchain) {
         this.withdrawRepositry = withdrawRepositry;
         this.paginationService = paginationService;
         this.pinCodeService = pinCodeService;
         this.userService = userService;
         this.notficationService = notficationService;
+        this.userWallteBlockchain = userWallteBlockchain;
     }
     WithDrawService.prototype.allTransactions = function (query, user) {
         return __awaiter(this, void 0, void 0, function () {
@@ -77,12 +79,13 @@ var WithDrawService = /** @class */ (function () {
     };
     WithDrawService.prototype.order = function (data, user) {
         return __awaiter(this, void 0, Promise, function () {
-            var pinCode, checkMoney;
+            var pinCode, checkMoney, userWallteBlockchain;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.pinCodeService.checkVerfied(data, user)];
                     case 1:
                         pinCode = _a.sent();
+                        if (!(data.type == typeWithdraw_enum_1.TypeWithdrawEnum.PROFIT)) return [3 /*break*/, 6];
                         return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, data.amount)];
                     case 2:
                         checkMoney = _a.sent();
@@ -94,6 +97,19 @@ var WithDrawService = /** @class */ (function () {
                                 message: "success for withdraw"
                             }];
                     case 4: throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
+                    case 5: return [3 /*break*/, 10];
+                    case 6: return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)];
+                    case 7:
+                        userWallteBlockchain = _a.sent();
+                        if (!(data.amount < userWallteBlockchain)) return [3 /*break*/, 8];
+                        throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
+                    case 8: return [4 /*yield*/, this.storeTransactionDB(data.amount, user.userId, data.publicAddress)];
+                    case 9:
+                        _a.sent();
+                        return [2 /*return*/, {
+                                message: "success for withdraw"
+                            }];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

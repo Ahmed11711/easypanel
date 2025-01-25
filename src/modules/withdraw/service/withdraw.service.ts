@@ -15,6 +15,9 @@ import { TypeWithdraw } from "../enum/withdraw.enum";
 import { NotficationService } from "src/modules/notfication/service/notication.service";
 import { NotficationType } from "src/modules/notfication/enum/notifaction.enum";
 import { WithdrawBank } from "../dto/withdrawByBank.dto";
+import { TypeWithdrawEnum } from "../enum/typeWithdraw.enum";
+import { UserWallteService } from 'src/modules/user-wallte/service/userWallte.service';
+
 @Injectable()
 
 
@@ -26,7 +29,10 @@ export class WithDrawService{
         private readonly paginationService: PaginationService,
         private readonly pinCodeService:PinCodeService,
         private readonly userService:UserService,
-        private readonly notficationService:NotficationService
+        private readonly notficationService:NotficationService,
+        private readonly userWallteBlockchain :UserWallteService
+
+        
 
     ){}
 
@@ -44,28 +50,54 @@ export class WithDrawService{
 
      async order(data:OrderWithdraw,user:IJWTpayload):Promise<{message:string}>{
       
-       // check the pincode
-      // check the have grter than money 
-      // dicount it from mony 
-      // store the transaction in db
+      
 
       const pinCode= await this.pinCodeService.checkVerfied(data,user);
-      const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
+
+      // check if money or prfoit
+      if(data.type==TypeWithdrawEnum.PROFIT)
+      {
+        const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
+        if(checkMoney){
+
+          await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
+   
+          return {
+           message :"success for withdraw"
+          }
+         }else{
+           throw new HttpException(
+             'You dont have enough balance withdrawal. Please try again later.',
+             HttpStatus.CONFLICT,
+           );  
+         
+         }
+       
+
+      }else{
+        // const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
+        const userWallteBlockchain=await this.userWallteBlockchain.myBlnceOfTron(user.userId)
+
+        if (data.amount < userWallteBlockchain) {
+          throw new HttpException(
+            'You dont have enough balance withdrawal. Please try again later.',
+            HttpStatus.CONFLICT,
+          );  
+            }else{
+              await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
+   
+              return {
+               message :"success for withdraw"
+              }
+            }
+
+      }
+
+
+       
  
 
-      if(checkMoney){
-
-       await this.storeTransactionDB(data.amount,user.userId,data.publicAddress)
-
-       return {
-        message :"success for withdraw"
-       }
-      }else{
-        throw new HttpException(
-          'You dont have enough balance withdrawal. Please try again later.',
-          HttpStatus.CONFLICT,
-        );      }
-    
+     
       
      }
       async storeTransactionDB(amount:number,userId:number,Visa_number:string):Promise<void>{

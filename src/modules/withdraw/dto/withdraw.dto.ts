@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, MaxLength, MinLength } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, MaxLength, MinLength } from "class-validator";
+import { TypeWithdrawEnum } from "../enum/typeWithdraw.enum";
 
 export class OrderWithdraw{
 
@@ -13,4 +14,8 @@ export class OrderWithdraw{
     @MinLength(6)
     @MaxLength(6)
     pinCode:string
+
+    @IsNotEmpty()
+    @IsEnum(TypeWithdrawEnum)
+    type:TypeWithdrawEnum
 }
