@@ -38,14 +38,14 @@ export class UserWallteController {
   myWallte(@GetCurrentUser() user:IJWTpayload,@Body() data)
   {
     // // (fromAddress: string, toAddress: string, amount: number, privateKey: string) 
-     const fromAddress="TN2rK17VLMWGjT2vxz3EiqFJPFpGBeUHu9";
-     const privateKey="a70f57c5eaf9210f01113edea6c73c13c1ced2dcd216c1b3d6643784d746e527";
-    const toAddress="TSaM4syJSdp3w72uZK7SBeFtDe3bMpG8qf";
-    const amount=1;
+    //  const fromAddress="TN2rK17VLMWGjT2vxz3EiqFJPFpGBeUHu9";
+    //  const privateKey="a70f57c5eaf9210f01113edea6c73c13c1ced2dcd216c1b3d6643784d746e527";
+    // const toAddress="TSaM4syJSdp3w72uZK7SBeFtDe3bMpG8qf";
+    // const amount=1;
     
-    const usdtContractAddress = 'THPvaUhoh2Qn2y9THCZML3H815hhFhn5YC'; 
-    // // return this.userWallteService.sendTRX(fromAddress,toAddress,1,privateKey );
-    return this.userWallteService.sendTRC20( toAddress,data.amount,user.userId,privateKey);
+    // const usdtContractAddress = 'THPvaUhoh2Qn2y9THCZML3H815hhFhn5YC'; 
+    // // // return this.userWallteService.sendTRX(fromAddress,toAddress,1,privateKey );
+    // return this.userWallteService.sendTRC20( toAddress,data.amount,user.userId,privateKey);
   }
 
   @Post('credantional-wallte')

@@ -6,12 +6,14 @@ import { ShareService } from "./service/shares.service";
 import { ShareUser } from "./entity/shareUser.entity";
 import { ProfitShare } from "./entity/profitShare.entity";
 import { UserModule } from "../user/user.module";
+import { UserWaalteModule } from 'src/modules/user-wallte/userWallte.module';
+ 
  
  
 @Module({
-    imports:[TypeOrmModule.forFeature([Share,ShareUser,ProfitShare]),UserModule ],
+    imports:[TypeOrmModule.forFeature([Share,ShareUser,ProfitShare]),UserModule ,UserWaalteModule],
     controllers:[ShareController],
-    providers:[ShareService,],
+    providers:[ShareService ],
     exports:[ShareService],
 })
 

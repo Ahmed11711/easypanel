@@ -325,7 +325,7 @@ var UserWallteService = /** @class */ (function () {
     };
     UserWallteService.prototype.myBlnceOfTron = function (user_id) {
         return __awaiter(this, void 0, void 0, function () {
-            var myWallte, responses;
+            var myWallte, responses, usdtData, usdt, actualAmount;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.checkHaveAcount(user_id)];
@@ -334,10 +334,22 @@ var UserWallteService = /** @class */ (function () {
                         if (!myWallte) {
                             throw new common_1.NotFoundException('Please Create Wallte  ');
                         }
-                        return [4 /*yield*/, axios_1["default"].get("https://api.tronscan.org/api/account?address=" + myWallte.address)];
+                        return [4 /*yield*/, axios_1["default"].get("https://api.tronscan.org/api/account?address=" + myWallte.address)
+                            // const usdtData = responses.data.tokenes.filter(item => item.tokenAbbr === "USDT");
+                        ];
                     case 2:
                         responses = _a.sent();
-                        return [2 /*return*/, responses.data.tokens];
+                        usdtData = responses.data.tokens.filter(function (item) { return item.tokenAbbr === "USDT"; });
+                        if (usdtData.length > 0) {
+                            usdt = usdtData[0];
+                            actualAmount = parseInt(usdt.balance) / Math.pow(10, usdt.tokenDecimal);
+                            // Log the raw balance for debugging
+                            return [2 /*return*/, actualAmount];
+                        }
+                        else {
+                            return [2 /*return*/, 0];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });

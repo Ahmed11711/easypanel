@@ -53,11 +53,14 @@ var shareUser_entity_1 = require("../entity/shareUser.entity");
 var generateCode_1 = require("src/common/generateRandomCode/generateCode");
 var share_enum_1 = require("../enum/share.enum");
 var ShareService = /** @class */ (function () {
-    function ShareService(SharesRepository, ShareUserRepository, userService, dataSource) {
+    function ShareService(SharesRepository, ShareUserRepository, userService, dataSource, userWallteBlockchain
+    // private readonly investmentGateway: InvestMent, // Inject Gateway
+    ) {
         this.SharesRepository = SharesRepository;
         this.ShareUserRepository = ShareUserRepository;
         this.userService = userService;
         this.dataSource = dataSource;
+        this.userWallteBlockchain = userWallteBlockchain;
     }
     ShareService.prototype.hsitoryShare = function (user) {
         return __awaiter(this, void 0, void 0, function () {
@@ -85,7 +88,7 @@ var ShareService = /** @class */ (function () {
     };
     ShareService.prototype.investment = function (data, user) {
         return __awaiter(this, void 0, void 0, function () {
-            var shareId, numberUnitBuy, share, userForBuy, queryRunner, totalCost, error_1;
+            var shareId, numberUnitBuy, share, userForBuy, userWallteBlockchain, queryRunner, totalCost, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -97,34 +100,38 @@ var ShareService = /** @class */ (function () {
                         return [4 /*yield*/, this.validateUser(user.userId, user.email)];
                     case 2:
                         userForBuy = _a.sent();
+                        return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)
+                            // console.log(userWallteBlockchain);
+                        ];
+                    case 3:
+                        userWallteBlockchain = _a.sent();
                         queryRunner = this.dataSource.createQueryRunner();
                         return [4 /*yield*/, queryRunner.startTransaction()];
-                    case 3:
-                        _a.sent();
-                        _a.label = 4;
                     case 4:
-                        _a.trys.push([4, 10, 12, 14]);
-                        totalCost = numberUnitBuy * share.price;
-                        return [4 /*yield*/, this.validateUserFunds(userForBuy.money, totalCost, user.email)];
+                        _a.sent();
+                        _a.label = 5;
                     case 5:
+                        _a.trys.push([5, 10, 12, 14]);
+                        totalCost = numberUnitBuy * share.price;
+                        return [4 /*yield*/, this.validateUserFunds(userWallteBlockchain, totalCost, user.email)];
+                    case 6:
                         _a.sent();
                         // create UserInvest
                         return [4 /*yield*/, this.createInvestmentHistory(user.userId, share, totalCost, numberUnitBuy, queryRunner)];
-                    case 6:
+                    case 7:
                         // create UserInvest
                         _a.sent();
                         // updated share
                         return [4 /*yield*/, this.updateShareData(share, numberUnitBuy, queryRunner)];
-                    case 7:
+                    case 8:
                         // updated share
                         _a.sent();
                         //  update money for user
-                        return [4 /*yield*/, this.updateUserFunds(user, totalCost, queryRunner)];
-                    case 8:
-                        //  update money for user
-                        _a.sent();
+                        // await this.updateUserFunds(user, totalCost, queryRunner);
                         return [4 /*yield*/, queryRunner.commitTransaction()];
                     case 9:
+                        //  update money for user
+                        // await this.updateUserFunds(user, totalCost, queryRunner);
                         _a.sent();
                         return [2 /*return*/, {
                                 message: 'Investment successful'

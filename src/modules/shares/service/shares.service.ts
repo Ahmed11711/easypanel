@@ -13,6 +13,7 @@ import { IUser } from 'src/modules/user/interface/user.interface';
 import { EntityManager } from 'typeorm';
 import { DataSource } from 'typeorm';
 import { ShareDto } from '../dto/share.dtot';
+import { UserWallteService } from 'src/modules/user-wallte/service/userWallte.service';
 
 @Injectable()
 export class ShareService {
@@ -23,6 +24,7 @@ export class ShareService {
     private readonly ShareUserRepository: Repository<ShareUser>,
     private readonly userService: UserService,
     private dataSource: DataSource,
+    private userWallteBlockchain :UserWallteService
 
     // private readonly investmentGateway: InvestMent, // Inject Gateway
   ) {}
@@ -50,6 +52,10 @@ export class ShareService {
 
     // Check if the user exists
     const userForBuy = await this.validateUser(user.userId, user.email);
+    // user wallte for blockchain
+
+    const userWallteBlockchain=await this.userWallteBlockchain.myBlnceOfTron(user.userId)
+// console.log(userWallteBlockchain);
 
     const queryRunner = this.dataSource.createQueryRunner(); // for make query transaction
     await queryRunner.startTransaction();
@@ -58,7 +64,7 @@ export class ShareService {
       // check the money for user
 
       const totalCost = numberUnitBuy * share.price;
-      await this.validateUserFunds(userForBuy.money, totalCost, user.email);
+      await this.validateUserFunds(userWallteBlockchain, totalCost, user.email);
       // create UserInvest
       await this.createInvestmentHistory(
         user.userId,
@@ -72,7 +78,7 @@ export class ShareService {
       await this.updateShareData(share, numberUnitBuy, queryRunner);
 
       //  update money for user
-      await this.updateUserFunds(user, totalCost, queryRunner);
+      // await this.updateUserFunds(user, totalCost, queryRunner);
       await queryRunner.commitTransaction();
 
       return {

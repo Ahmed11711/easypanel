@@ -15,14 +15,15 @@ var shares_service_1 = require("./service/shares.service");
 var shareUser_entity_1 = require("./entity/shareUser.entity");
 var profitShare_entity_1 = require("./entity/profitShare.entity");
 var user_module_1 = require("../user/user.module");
+var userWallte_module_1 = require("src/modules/user-wallte/userWallte.module");
 var ShareModule = /** @class */ (function () {
     function ShareModule() {
     }
     ShareModule = __decorate([
         common_1.Module({
-            imports: [typeorm_1.TypeOrmModule.forFeature([share_entity_1.Share, shareUser_entity_1.ShareUser, profitShare_entity_1.ProfitShare]), user_module_1.UserModule],
+            imports: [typeorm_1.TypeOrmModule.forFeature([share_entity_1.Share, shareUser_entity_1.ShareUser, profitShare_entity_1.ProfitShare]), user_module_1.UserModule, userWallte_module_1.UserWaalteModule],
             controllers: [share_controller_1.ShareController],
-            providers: [shares_service_1.ShareService,],
+            providers: [shares_service_1.ShareService],
             exports: [shares_service_1.ShareService]
         })
     ], ShareModule);

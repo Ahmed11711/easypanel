@@ -250,7 +250,7 @@ export class UserWallteService {
   }
 
    
-  async myBlnceOfTron(user_id){
+  async myBlnceOfTron(user_id) {
     
     const myWallte=await this.checkHaveAcount(user_id);
     if(!myWallte){
@@ -259,9 +259,26 @@ export class UserWallteService {
     }
     const responses = await axios.get(`https://api.tronscan.org/api/account?address=${myWallte.address}`)
 
-     
+    // const usdtData = responses.data.tokenes.filter(item => item.tokenAbbr === "USDT");
+
+    const usdtData = responses.data.tokens.filter(item => item.tokenAbbr === "USDT");
+
+    if (usdtData.length > 0) {
+      const usdt = usdtData[0]; // Get the first USDT token (assuming only one result)
     
-    return responses.data.tokens;
+      // Calculate the actual amount
+      const actualAmount = parseInt(usdt.balance) / Math.pow(10, usdt.tokenDecimal);
+    
+      // Log the raw balance for debugging
+     
+      return actualAmount;
+    } else {
+       return 0;
+    }
+
+    // consle
+    // // return usdtDate;
+    // return responses.data.tokens;
   } 
 
 

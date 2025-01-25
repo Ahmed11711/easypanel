@@ -71,13 +71,13 @@ var UserWallteController = /** @class */ (function () {
     //  @ISPublic()
     UserWallteController.prototype.myWallte = function (user, data) {
         // // (fromAddress: string, toAddress: string, amount: number, privateKey: string) 
-        var fromAddress = "TN2rK17VLMWGjT2vxz3EiqFJPFpGBeUHu9";
-        var privateKey = "a70f57c5eaf9210f01113edea6c73c13c1ced2dcd216c1b3d6643784d746e527";
-        var toAddress = "TSaM4syJSdp3w72uZK7SBeFtDe3bMpG8qf";
-        var amount = 1;
-        var usdtContractAddress = 'THPvaUhoh2Qn2y9THCZML3H815hhFhn5YC';
-        // // return this.userWallteService.sendTRX(fromAddress,toAddress,1,privateKey );
-        return this.userWallteService.sendTRC20(toAddress, data.amount, user.userId, privateKey);
+        //  const fromAddress="TN2rK17VLMWGjT2vxz3EiqFJPFpGBeUHu9";
+        //  const privateKey="a70f57c5eaf9210f01113edea6c73c13c1ced2dcd216c1b3d6643784d746e527";
+        // const toAddress="TSaM4syJSdp3w72uZK7SBeFtDe3bMpG8qf";
+        // const amount=1;
+        // const usdtContractAddress = 'THPvaUhoh2Qn2y9THCZML3H815hhFhn5YC'; 
+        // // // return this.userWallteService.sendTRX(fromAddress,toAddress,1,privateKey );
+        // return this.userWallteService.sendTRC20( toAddress,data.amount,user.userId,privateKey);
     };
     UserWallteController.prototype.credantionalWallte = function (user) {
         return __awaiter(this, void 0, void 0, function () {
