@@ -18,6 +18,7 @@ import { User } from 'src/modules/user/entity/user.entity';
 import { Wallet } from './wallet.entity';
 import { ContractEntity } from 'src/modules/contract/entity/contract.entity';
 import { ProfitWallte } from './profitWallte.entity';
+import { StatusWallte } from '../enum/statusWallte.enum';
 
 @Entity('buffer_users')
 export class BuyWallet {
@@ -64,10 +65,9 @@ export class BuyWallet {
   
   
 
-  @Column({ type: 'date', nullable: true })
-  finsh_quarter: Date;
-
- 
+  @Column({ type: 'enum', enum: StatusWallte, default: StatusWallte.PENDING })
+  finsh_quarter: StatusWallte;
+  
 
   @ManyToOne(() => Wallet, (wallte) => wallte.buyWallte)
   @JoinColumn({ name: 'buffer_id' })

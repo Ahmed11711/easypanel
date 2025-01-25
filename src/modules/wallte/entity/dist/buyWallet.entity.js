@@ -12,6 +12,7 @@ var typeorm_1 = require("typeorm");
 var wallet_entity_1 = require("./wallet.entity");
 var contract_entity_1 = require("src/modules/contract/entity/contract.entity");
 var profitWallte_entity_1 = require("./profitWallte.entity");
+var statusWallte_enum_1 = require("../enum/statusWallte.enum");
 var BuyWallet = /** @class */ (function () {
     function BuyWallet() {
     }
@@ -55,7 +56,7 @@ var BuyWallet = /** @class */ (function () {
         typeorm_1.Column()
     ], BuyWallet.prototype, "HashID");
     __decorate([
-        typeorm_1.Column({ type: 'date', nullable: true })
+        typeorm_1.Column({ type: 'enum', "enum": statusWallte_enum_1.StatusWallte, "default": statusWallte_enum_1.StatusWallte.PENDING })
     ], BuyWallet.prototype, "finsh_quarter");
     __decorate([
         typeorm_1.ManyToOne(function () { return wallet_entity_1.Wallet; }, function (wallte) { return wallte.buyWallte; }),

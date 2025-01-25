@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn,OneToOne, OneToMany, Double } from 'typeorm';
 import {Share} from './share.entity'
 import { ProfitShare } from './profitShare.entity';
+import { StatusWallte } from 'src/modules/wallte/enum/statusWallte.enum';
  
 @Entity('share_users')
 export class ShareUser {
@@ -44,6 +45,9 @@ export class ShareUser {
   @Column()
   HashID: string;
 
+  @Column({ type: 'enum', enum: StatusWallte, default: StatusWallte.PENDING })
+  finsh_quarter: StatusWallte;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
@@ -51,7 +55,8 @@ export class ShareUser {
   updated_at: Date;
 
   // Define relationships if necessary
- 
+
+  
 
  
 }

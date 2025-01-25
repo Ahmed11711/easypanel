@@ -10,6 +10,7 @@ exports.ShareUser = void 0;
 var typeorm_1 = require("typeorm");
 var share_entity_1 = require("./share.entity");
 var profitShare_entity_1 = require("./profitShare.entity");
+var statusWallte_enum_1 = require("src/modules/wallte/enum/statusWallte.enum");
 var ShareUser = /** @class */ (function () {
     function ShareUser() {
     }
@@ -51,6 +52,9 @@ var ShareUser = /** @class */ (function () {
     __decorate([
         typeorm_1.Column()
     ], ShareUser.prototype, "HashID");
+    __decorate([
+        typeorm_1.Column({ type: 'enum', "enum": statusWallte_enum_1.StatusWallte, "default": statusWallte_enum_1.StatusWallte.PENDING })
+    ], ShareUser.prototype, "finsh_quarter");
     __decorate([
         typeorm_1.Column({ type: 'timestamp', "default": function () { return 'CURRENT_TIMESTAMP'; } })
     ], ShareUser.prototype, "created_at");

@@ -196,6 +196,7 @@ export class WalletService {
       HashID: generateRandomAlphanumeric(25),
       type: type,
       profit: profit,
+      
     });
      
     return await queryRunner.manager.save(create);
