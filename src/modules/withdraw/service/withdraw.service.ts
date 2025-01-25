@@ -121,21 +121,50 @@ export class WithDrawService{
       
   
        const pinCode= await this.pinCodeService.checkVerfied(data,user);
-       const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
-  
+
+
+       if (data.type === TypeWithdrawEnum.PROFIT) {
+        const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
+
+        if(checkMoney){
  
-       if(checkMoney){
- 
-        await this.storeTransactionDByBank(data,user)
- 
-        return {
-         message :"success for withdraw"
-        }
+          await this.storeTransactionDByBank(data,user)
+   
+          return {
+           message :"success for withdraw"
+          }
+         }else{
+           throw new HttpException(
+             'You dont have enough balance withdrawal. Please try again later.',
+             HttpStatus.CONFLICT,
+           );   
+          
+          }
+
        }else{
-         throw new HttpException(
-           'You dont have enough balance withdrawal. Please try again later.',
-           HttpStatus.CONFLICT,
-         );      }
+        const userWallteBlockchain = await this.userWallteBlockchain.myBlnceOfTron(user.userId);
+    
+        // Ensure proper comparison of numeric values (make sure `userWallteBlockchain` is a number)
+        if (Number(data.amount) > Number(userWallteBlockchain)) {
+          throw new HttpException(
+            'You don\'t have enough balance for withdrawal. Please try again later.',
+            HttpStatus.CONFLICT,
+          );
+        } else {
+          // Proceed with transaction storage if the balance is sufficient
+          await this.storeTransactionDByBank(data,user)
+          return {
+            message: "Success for money withdrawal",
+          };
+        }
+       }
+
+
+
+
+   
+ 
+    
      
        
       }

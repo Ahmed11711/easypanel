@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 exports.__esModule = true;
 exports.WithdrawByBank = void 0;
 var class_validator_1 = require("class-validator");
+var typeWithdraw_enum_1 = require("../enum/typeWithdraw.enum");
 var WithdrawByBank = /** @class */ (function () {
     function WithdrawByBank() {
     }
@@ -28,6 +29,10 @@ var WithdrawByBank = /** @class */ (function () {
         class_validator_1.MinLength(6),
         class_validator_1.MaxLength(6)
     ], WithdrawByBank.prototype, "pinCode");
+    __decorate([
+        class_validator_1.IsNotEmpty(),
+        class_validator_1.IsEnum(typeWithdraw_enum_1.TypeWithdrawEnum)
+    ], WithdrawByBank.prototype, "type");
     return WithdrawByBank;
 }());
 exports.WithdrawByBank = WithdrawByBank;
