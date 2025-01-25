@@ -81,44 +81,58 @@ var WithDrawService = /** @class */ (function () {
     };
     WithDrawService.prototype.order = function (data, user) {
         return __awaiter(this, void 0, Promise, function () {
-            var pinCode, checkMoney, userWallteBlockchain;
+            var pinCode, amountMony, Muser, amount, amount, checkMoney, userWallteBlockchain;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.pinCodeService.checkVerfied(data, user)];
                     case 1:
                         pinCode = _a.sent();
-                        if (!(data.type === typeWithdraw_enum_1.TypeWithdrawEnum.PROFIT)) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, data.amount)];
+                        amountMony = 0;
+                        if (!(data.type === typeWithdraw_enum_1.TypeWithdrawEnum.PROFIT)) return [3 /*break*/, 7];
+                        return [4 /*yield*/, this.userService.findOneByEmail(user.email)];
                     case 2:
-                        checkMoney = _a.sent();
-                        if (!checkMoney) return [3 /*break*/, 4];
-                        // Proceed with transaction storage if the balance is sufficient
-                        return [4 /*yield*/, this.storeTransactionDB(data.amount, user.userId, data.publicAddress)];
+                        Muser = _a.sent();
+                        // console.log(Muser);
+                        if (Muser.number_points === 0) {
+                            amount = data.amount / 2;
+                            amountMony = amount;
+                        }
+                        else {
+                            amount = data.amount;
+                            amountMony = amount;
+                            // console.log(amountMony);
+                        }
+                        return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, amountMony)];
                     case 3:
+                        checkMoney = _a.sent();
+                        if (!checkMoney) return [3 /*break*/, 5];
+                        // Proceed with transaction storage if the balance is sufficient
+                        return [4 /*yield*/, this.storeTransactionDB(amountMony, user.userId, data.publicAddress)];
+                    case 4:
                         // Proceed with transaction storage if the balance is sufficient
                         _a.sent();
                         return [2 /*return*/, {
                                 message: "Success for profit withdrawal"
                             }];
-                    case 4: 
+                    case 5: 
                     // Handle insufficient funds for profit withdrawal
                     throw new common_1.HttpException('You don\'t have enough balance to withdraw profit. Please try again later.', common_1.HttpStatus.CONFLICT);
-                    case 5: return [3 /*break*/, 10];
-                    case 6: return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)];
-                    case 7:
+                    case 6: return [3 /*break*/, 11];
+                    case 7: return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)];
+                    case 8:
                         userWallteBlockchain = _a.sent();
-                        if (!(Number(data.amount) > Number(userWallteBlockchain))) return [3 /*break*/, 8];
+                        if (!(Number(data.amount) > Number(userWallteBlockchain))) return [3 /*break*/, 9];
                         throw new common_1.HttpException('You don\'t have enough balance for withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
-                    case 8: 
+                    case 9: 
                     // Proceed with transaction storage if the balance is sufficient
                     return [4 /*yield*/, this.storeTransactionDB(data.amount, user.userId, data.publicAddress)];
-                    case 9:
+                    case 10:
                         // Proceed with transaction storage if the balance is sufficient
                         _a.sent();
                         return [2 /*return*/, {
                                 message: "Success for money withdrawal"
                             }];
-                    case 10: return [2 /*return*/];
+                    case 11: return [2 /*return*/];
                 }
             });
         });
@@ -150,40 +164,55 @@ var WithDrawService = /** @class */ (function () {
     };
     WithDrawService.prototype.orderByBank = function (data, user) {
         return __awaiter(this, void 0, Promise, function () {
-            var pinCode, checkMoney, userWallteBlockchain;
+            var pinCode, amountMony, Muser, amount, amount, checkMoney, userWallteBlockchain;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.pinCodeService.checkVerfied(data, user)];
                     case 1:
                         pinCode = _a.sent();
-                        if (!(data.type === typeWithdraw_enum_1.TypeWithdrawEnum.PROFIT)) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, data.amount)];
+                        amountMony = 0;
+                        if (!(data.type === typeWithdraw_enum_1.TypeWithdrawEnum.PROFIT)) return [3 /*break*/, 7];
+                        return [4 /*yield*/, this.userService.findOneByEmail(user.email)];
                     case 2:
-                        checkMoney = _a.sent();
-                        if (!checkMoney) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.storeTransactionDByBank(data, user)];
+                        Muser = _a.sent();
+                        // console.log(Muser);
+                        if (Muser.number_points === 0) {
+                            amount = data.amount / 2;
+                            amountMony = amount;
+                        }
+                        else {
+                            amount = data.amount;
+                            amountMony = amount;
+                            // console.log(amountMony);
+                        }
+                        return [4 /*yield*/, this.userService.checkmyMoneyWithUpdate(user, amountMony)];
                     case 3:
+                        checkMoney = _a.sent();
+                        if (!checkMoney) return [3 /*break*/, 5];
+                        data.amount = amountMony;
+                        return [4 /*yield*/, this.storeTransactionDByBank(data, user)];
+                    case 4:
                         _a.sent();
                         return [2 /*return*/, {
                                 message: "success for withdraw"
                             }];
-                    case 4: throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
-                    case 5: return [3 /*break*/, 10];
-                    case 6: return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)];
-                    case 7:
+                    case 5: throw new common_1.HttpException('You dont have enough balance withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
+                    case 6: return [3 /*break*/, 11];
+                    case 7: return [4 /*yield*/, this.userWallteBlockchain.myBlnceOfTron(user.userId)];
+                    case 8:
                         userWallteBlockchain = _a.sent();
-                        if (!(Number(data.amount) > Number(userWallteBlockchain))) return [3 /*break*/, 8];
+                        if (!(Number(data.amount) > Number(userWallteBlockchain))) return [3 /*break*/, 9];
                         throw new common_1.HttpException('You don\'t have enough balance for withdrawal. Please try again later.', common_1.HttpStatus.CONFLICT);
-                    case 8: 
+                    case 9: 
                     // Proceed with transaction storage if the balance is sufficient
                     return [4 /*yield*/, this.storeTransactionDByBank(data, user)];
-                    case 9:
+                    case 10:
                         // Proceed with transaction storage if the balance is sufficient
                         _a.sent();
                         return [2 /*return*/, {
                                 message: "Success for money withdrawal"
                             }];
-                    case 10: return [2 /*return*/];
+                    case 11: return [2 /*return*/];
                 }
             });
         });

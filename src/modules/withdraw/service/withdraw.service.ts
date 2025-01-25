@@ -54,15 +54,31 @@ export class WithDrawService{
      async order(data: OrderWithdraw, user: IJWTpayload): Promise<{ message: string }> {
       // Step 1: Verify Pin Code
       const pinCode = await this.pinCodeService.checkVerfied(data, user);
-    
+     var amountMony=0;
       // Step 2: Check if the withdrawal type is PROFIT or MONEY
       if (data.type === TypeWithdrawEnum.PROFIT) {
         // Check if the user has enough balance for the withdrawal
-        const checkMoney = await this.userService.checkmyMoneyWithUpdate(user, data.amount);
+        const Muser=await this.userService.findOneByEmail(user.email);
+        // console.log(Muser);
+        if(Muser.number_points === 0)
+        {
+          const amount=data.amount/2;
+          amountMony = amount;
+           
+          
+          
+        }else{
+          const amount=data.amount;
+          amountMony=amount;
+          // console.log(amountMony);
+          
+        }
+        
+        const checkMoney = await this.userService.checkmyMoneyWithUpdate(user, amountMony);
         
         if (checkMoney) {
           // Proceed with transaction storage if the balance is sufficient
-          await this.storeTransactionDB(data.amount, user.userId, data.publicAddress);
+          await this.storeTransactionDB(amountMony, user.userId, data.publicAddress);
           return {
             message: "Success for profit withdrawal",
           };
@@ -122,13 +138,26 @@ export class WithDrawService{
   
        const pinCode= await this.pinCodeService.checkVerfied(data,user);
         
-
+      var amountMony=0;
 
        if (data.type === TypeWithdrawEnum.PROFIT) {
-        const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,  data.amount);
+        const Muser=await this.userService.findOneByEmail(user.email);
+        // console.log(Muser);
+        if(Muser.number_points === 0)
+        {
+          const amount=data.amount/2;
+          amountMony = amount;
+        }else{
+          const amount=data.amount;
+          amountMony=amount;
+          // console.log(amountMony);
+          
+        }
+        const checkMoney=await this.userService.checkmyMoneyWithUpdate(user,amountMony);
 
         if(checkMoney){
  
+          data.amount=amountMony;
           await this.storeTransactionDByBank(data,user)
    
           return {
