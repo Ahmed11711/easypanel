@@ -51,6 +51,19 @@ export class WithDrawService{
      return paginationData
      }
 
+     async allTransactionsByBank(query: any, user: IJWTpayload) {
+  
+      const conditions = { user_id: user.userId };
+     const paginationData = await this.paginationService.paginate(
+       this.withdrawRepositryByBank,
+       query,
+       conditions,
+       ['id', 'amount','status','created_at'] 
+     );
+     return paginationData
+     }
+
+
      async order(data: OrderWithdraw, user: IJWTpayload): Promise<{ message: string }> {
       // Step 1: Verify Pin Code
       const pinCode = await this.pinCodeService.checkVerfied(data, user);

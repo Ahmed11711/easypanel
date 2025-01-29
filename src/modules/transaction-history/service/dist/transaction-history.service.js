@@ -72,7 +72,7 @@ var TransactionHistoryServeice = /** @class */ (function () {
     }
     TransactionHistoryServeice.prototype.allTransaction = function (query, user) {
         return __awaiter(this, void 0, void 0, function () {
-            var depositeTransactions, depositeTransactionsByInvoice, withdrawTransactions, combinedTransactions, sortedTransactions, _a, skip, take, page, limit, paginatedData;
+            var depositeTransactions, depositeTransactionsByInvoice, withdrawTransactions, withdrawTransactionsByBank, combinedTransactions, sortedTransactions, _a, skip, take, page, limit, paginatedData;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.depositeService.allTransaction(query, user)];
@@ -84,9 +84,14 @@ var TransactionHistoryServeice = /** @class */ (function () {
                         return [4 /*yield*/, this.withdrawService.allTransactions(query, user)];
                     case 3:
                         withdrawTransactions = _b.sent();
-                        combinedTransactions = __spreadArrays(depositeTransactions.data.map(function (item) { return (__assign(__assign({}, item), { module: 'deposite' })); }), depositeTransactionsByInvoice.data.map(function (item) { return (__assign(__assign({}, item), { module: 'deposite', type: type_deposite_enum_1.TypeDeposite.CASHHAND })); }), withdrawTransactions.data.map(function (item) { return (__assign(__assign({}, item), { module: 'withdraw' })); }));
+                        return [4 /*yield*/, this.withdrawService.allTransactionsByBank(query, user)];
+                    case 4:
+                        withdrawTransactionsByBank = _b.sent();
+                        combinedTransactions = __spreadArrays(depositeTransactions.data.map(function (item) { return (__assign(__assign({}, item), { module: 'deposite' })); }), depositeTransactionsByInvoice.data.map(function (item) { return (__assign(__assign({}, item), { module: 'deposite', type: type_deposite_enum_1.TypeDeposite.CASHHAND })); }), withdrawTransactions.data.map(function (item) { return (__assign(__assign({}, item), { module: 'withdraw', type: 'blockchain' })); }), withdrawTransactionsByBank.data.map(function (item) { return (__assign(__assign({}, item), { module: 'withdraw', type: 'bank' })); }));
                         sortedTransactions = combinedTransactions.sort(function (a, b) {
-                            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                            var dateA = new Date(a.created_at);
+                            var dateB = new Date(b.created_at);
+                            return dateB.getTime() - dateA.getTime(); // Sorting descending by created_at
                         });
                         _a = this.paginationService.getPagination(query), skip = _a.skip, take = _a.take, page = _a.page, limit = _a.limit;
                         paginatedData = sortedTransactions.slice(skip, skip + take);

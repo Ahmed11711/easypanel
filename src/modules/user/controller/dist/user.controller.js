@@ -120,6 +120,10 @@ var UserController = /** @class */ (function () {
     UserController.prototype.forgetPassword = function (data) {
         return this.userService.forgetPassword(data);
     };
+    UserController.prototype.mostafa = function (req) {
+        console.log(req.headers);
+        return req.headers;
+    };
     __decorate([
         isPublic_decorator_1.ISPublic(),
         swaigger_decorator_1.ApiGlobalResponse('Create user', [
@@ -169,6 +173,11 @@ var UserController = /** @class */ (function () {
         common_1.Post('forget-password'),
         __param(0, common_1.Body())
     ], UserController.prototype, "forgetPassword");
+    __decorate([
+        isPublic_decorator_1.ISPublic(),
+        common_1.Get('mostafa'),
+        __param(0, common_1.Req())
+    ], UserController.prototype, "mostafa");
     UserController = __decorate([
         swagger_1.ApiTags('User'),
         common_1.Controller('users')

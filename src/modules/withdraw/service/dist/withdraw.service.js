@@ -79,6 +79,21 @@ var WithDrawService = /** @class */ (function () {
             });
         });
     };
+    WithDrawService.prototype.allTransactionsByBank = function (query, user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conditions, paginationData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        conditions = { user_id: user.userId };
+                        return [4 /*yield*/, this.paginationService.paginate(this.withdrawRepositryByBank, query, conditions, ['id', 'amount', 'status', 'created_at'])];
+                    case 1:
+                        paginationData = _a.sent();
+                        return [2 /*return*/, paginationData];
+                }
+            });
+        });
+    };
     WithDrawService.prototype.order = function (data, user) {
         return __awaiter(this, void 0, Promise, function () {
             var pinCode, amountMony, Muser, amount, amount, checkMoney, userWallteBlockchain;

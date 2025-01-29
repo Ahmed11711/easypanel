@@ -28,6 +28,9 @@ var WithdrawByBankss = /** @class */ (function () {
     ], WithdrawByBankss.prototype, "amount");
     __decorate([
         typeorm_1.Column()
+    ], WithdrawByBankss.prototype, "status");
+    __decorate([
+        typeorm_1.Column()
     ], WithdrawByBankss.prototype, "user_id");
     __decorate([
         typeorm_1.CreateDateColumn()

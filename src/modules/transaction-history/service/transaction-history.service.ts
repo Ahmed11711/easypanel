@@ -19,30 +19,41 @@ export class TransactionHistoryServeice {
 
    )
   {}
-    async allTransaction(query: any, user: IJWTpayload) {
-       const depositeTransactions = await this.depositeService.allTransaction(query, user);
-       const depositeTransactionsByInvoice = await this.invoiceService.allTransactions(query, user);
-      const withdrawTransactions = await this.withdrawService.allTransactions(query, user);
+  async allTransaction(query: any, user: IJWTpayload) {
+    // Fetch transactions from different sources
+    const depositeTransactions = await this.depositeService.allTransaction(query, user);
+    const depositeTransactionsByInvoice = await this.invoiceService.allTransactions(query, user);
+    const withdrawTransactions = await this.withdrawService.allTransactions(query, user);
+    const withdrawTransactionsByBank = await this.withdrawService.allTransactionsByBank(query, user);
+   
+    // Combine all transaction types into a single array with additional module and type fields
+    const combinedTransactions = [
+      ...depositeTransactions.data.map((item) => ({ ...item, module: 'deposite' })),
+      ...depositeTransactionsByInvoice.data.map((item) => ({ ...item, module: 'deposite', type: TypeDeposite.CASHHAND })),
+      ...withdrawTransactions.data.map((item) => ({ ...item, module: 'withdraw', type: 'blockchain' })), 
+      ...withdrawTransactionsByBank.data.map((item) => ({ ...item, module: 'withdraw', type: 'bank' })),
+    ];
   
-       const combinedTransactions = [
-        ...depositeTransactions.data.map((item) => ({ ...item, module: 'deposite' })),
-        ...depositeTransactionsByInvoice.data.map((item) => ({ ...item, module: 'deposite',type:TypeDeposite.CASHHAND})),
-        ...withdrawTransactions.data.map((item) => ({ ...item, module: 'withdraw' })),
-      ];
+    // Sort the combined transactions by creation date (latest first)
+    const sortedTransactions = combinedTransactions.sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+      return dateB.getTime() - dateA.getTime();  // Sorting descending by created_at
+    });
   
-       const sortedTransactions = combinedTransactions.sort((a, b) => {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();  
-      });
+    // Pagination handling
+    const { skip, take, page, limit } = this.paginationService.getPagination(query);
   
-       const { skip, take, page, limit } = this.paginationService.getPagination(query);
-      const paginatedData = sortedTransactions.slice(skip, skip + take); 
+    // Slice data according to pagination
+    const paginatedData = sortedTransactions.slice(skip, skip + take);
   
-      return {
-        data: paginatedData,
-        total: sortedTransactions.length,
-        page,
-        limit,
-        totalPages: Math.ceil(sortedTransactions.length / limit),
-      };
-    }
+    return {
+      data: paginatedData,
+      total: sortedTransactions.length,
+      page,
+      limit,
+      totalPages: Math.ceil(sortedTransactions.length / limit), // Calculate total pages
+    };
+  }
+  
   }

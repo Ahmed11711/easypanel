@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, UseGuards, Delete,UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Post, Get, UseGuards, Delete,UseInterceptors, UploadedFile,Req } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { UserService } from '../service/user.service';
@@ -15,6 +15,8 @@ import { use } from 'passport';
 import { ForgetPasswordDto } from 'src/modules/user/dto/forget-password-dtp';
 import { ChangeEmailDto } from '../dto/change-email-dto';
 import { ChangeProfileDto } from '../dto/change-profile-dto';
+import { Request, Response, NextFunction } from 'express';
+
 
 @ApiTags('User')
 @Controller('users')
@@ -93,5 +95,13 @@ export class UserController {
   forgetPassword(@Body() data: ForgetPasswordDto) {
     return this.userService.forgetPassword(data);
   }
+
+  @ISPublic()
+  @Get('mostafa')
+  mostafa(@Req() req: Request) {
+    console.log(req.headers);
+    return req.headers ;
+  }
+
 }
  

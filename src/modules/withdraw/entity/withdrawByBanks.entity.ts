@@ -29,6 +29,9 @@ export class WithdrawByBankss {
     @Column()  
     amount: number;
 
+    @Column()
+    status:string
+
 
     @Column()
       user_id:number
