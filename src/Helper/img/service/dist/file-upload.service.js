@@ -51,11 +51,11 @@ var FileService = /** @class */ (function () {
         this.s3Client = new client_s3_1.S3Client({
             region: 'eu-central-1',
             credentials: {
-                accessKeyId: 'AKIARWPFIIFOZPBBZGAQ',
-                secretAccessKey: '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'
+                accessKeyId: 'AKIA3RYC55QF4SBMJDEN',
+                secretAccessKey: '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'
             }
         });
-        this.bucketName = 'ahmedsamir11';
+        this.bucketName = 'newsmarttreading';
     }
     FileService.prototype.uploadFile = function (file, folderName) {
         return __awaiter(this, void 0, void 0, function () {
